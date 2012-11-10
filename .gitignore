@@ -1,0 +1,8 @@
+dev/
+logs/
+assimilation/static/js/bin/
+assimilation/static/js/closure/
+*.css
+*.pyc
+*.db
+.DS_Store

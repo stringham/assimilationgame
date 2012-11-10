@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <script type="text/javascript" src="/assimilation/static/js/jquery-1.8.0.min.js"></script>
+    <link rel="stylesheet" href="/assimilation/static/css/base.css" />
+    <title>{% block title %}Assimilation{% endblock %}</title>
+    <script>
+      function toggleAccount(close){
+        if(close)
+          $('.account').hide('slow');
+        else
+          $('.account').stop().toggle('slow');
+      }
+      function logout(){
+        window.location.pathname="/assimilation/auth/logout/";
+      }
+    </script>
+    {% block head %}
+    {% endblock %}
+</head>
+
+<body>
+
+  <div class="menu">
+    {% block menu %}
+    <img src="/assimilation/static/images/assimilation.png">
+    <h1 class="menu-title"> Assimilation </h1>
+    <ul>
+      <li><a href="/assimilation/home/">Home</a></li>
+      <li><a href="/assimilation/games">My Games</a></li>
+      <li><a onclick="toggleAccount()" class="account-open">My Account</a></li>
+    </ul>
+    {% endblock %}
+  </div>
+
+  <div class="account">
+    {% block account %}
+      {% if not login%}
+        <div class="account-name">
+          {{user.first_name}}
+          <div onclick="toggleAccount(true)" class="account-close"></div>
+        </div>
+        <div class="account-stats">
+          <table>
+              <tr>
+                  <td class="stats-title" colspan="2">Stats</td>
+              </tr>
+              <tr>
+                  <td class="stat-name">Total Games Played:</td>
+                  <td class="stat-value stat-total">125</td>
+              </tr>
+              <tr>
+                  <td class="stat-name">Wins:</td>
+                  <td class="stat-value stat-win">50</td>
+              </tr>
+              <tr>
+                  <td class="stat-name">Losses:</td>
+                  <td class="stat-value stat-loss">75</td>
+              </tr>
+              <tr>
+                  <td class="stat-name">Percent Wins:</td>
+                  <td class="stat-value stat-percent">40%</td>
+              </tr>
+              <tr>
+                  <td class="stat-name">Rank:</td>
+                  <td class="stat-value stat-rank">5</td>
+              </tr>
+          </table>
+        </div>
+        <div class="account-buttons">
+          <button class="account-update">Update Account</button>
+          <button onclick="logout()" class="account-signout">Sign Out</button>
+        </div>
+      {% else %}
+      {% endif %}
+    {% endblock %}
+  </div>
+
+  <div class="game-frame">
+    <div class="content">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <div class="options">
+      {% block options %}
+      {% endblock %}
+    </div>
+  </div>
+
+</body>
+</html>

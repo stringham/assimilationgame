@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block head%}
+<link rel="stylesheet" href="/assimilation/static/css/home.css" />
+<script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
+<script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
+<script>
+	goog.require("assimilation.CreateGameDialog");
+</script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		createGameDialog = new assimilation.CreateGameDialog();
+	});
+</script>
+{% endblock %}
+
+
+{% block content %}
+{% endblock %}
+
+{% block options %}
+<div class='game-create'>
+</div>
+{% endblock %}
