@@ -2,19 +2,197 @@
 .options{
 	.players{
 		height:110px;
-		background:palegoldenrod;
+		.rounded(10px);
+		border:2px solid black;
+		.player-title{
+			padding:5px;
+			text-align:center;
+			font-size:25px;
+			line-height:25px;
+			height:20px;
+			font-weight:bold;
+		}
+		.player-content{
+			.player{
+				float:left;
+				width:173px;
+				text-align:center;
+				font-weight:bold;
+				font-size:20px;
+				.blue{
+					.gradientFrom(#004c99);
+				}
+				.green{
+					.gradientFrom(#00cc00);
+				}
+				.player-piece{
+					width:45px;
+					height:45px;
+					margin: 0 auto;
+					line-height:45px;
+					font-size:20px;
+					color:white;
+					font-weight:bold;
+					.rounded(6px);
+					&.active{
+						width:29px;
+						height:29px;
+						border:8px solid black;
+						line-height:29px;
+					}
+				}
+			}
+		}
 	}
 	.history{
 		height:160px;
-		background:lightblue;
+		.history-title{
+			padding:5px;
+			text-align:center;
+			font-size:25px;
+			line-height:20px;
+			height:20px;
+			font-weight:bold;
+			.rounded(10px);
+			border:2px solid black;
+			margin-top:-2px;
+		}
+		.history-list{
+			overflow-y:scroll;
+			height:126px;
+			.number{
+			clear:both;
+				float:left;
+				width:40px;
+				text-align:center;
+			}
+			.move{
+				width:295px;
+				float:left;
+				text-align:center;
+				font-weight:bold;
+				color:white;
+				height:20px;
+				.rounded(10px);
+				.inner-shadow(0,0,2px,1);
+				cursor:pointer;
+				&.blue{
+					.gradientFrom(#004c99);
+				}
+				&.green{
+					.gradientFrom(#00cc00);
+				}
+			}
+		}
 	}
 	.chat{
 		height:170px;
-		background:palegoldenrod;
+		.chat-title{
+			padding:5px;
+			text-align:center;
+			font-size:25px;
+			line-height:20px;
+			height:20px;
+			font-weight:bold;
+			.rounded(10px);
+			border:2px solid black;
+		}
+		.messages{
+			height:110px;
+			overflow-y:scroll;
+			.name{
+				clear:both;
+				float:left;
+				font-weight:bold;
+				margin-right:4px;
+				&.blue{
+					color: #004c99;
+				}
+				&.green{
+					color: #00cc00;
+				}
+				&:after{
+					content: ':';
+					color:black;
+				}
+			}
+			.message{
+				line-height:22px;
+			}
+		}
+		.send{
+			height:25px;
+			.text-input{
+				float:left;
+				input{
+					border: 2px solid lightgray;
+					padding:0 9px;
+					margin-left:5px;
+					.rounded(12px);
+					height:22px;
+					font-size:20px;
+					width:260px;
+					&:focus{
+						outline:none;
+						border:2px solid gray;
+					}
+				}
+			}
+			.send-button{
+				float:right;
+				margin-right:5px;
+				.button(#0066cc);
+				height:25px;
+				line-height:25px;
+				width:50px;
+			}
+		}
 	}
 	.player-pieces{
-		height:110px;
-		background:lightblue;
+		position:relative;
+		height:106px;
+		border:2px solid black;
+		.rounded(10px);
+		.pieces-title{
+			padding:5px;
+			text-align:center;
+			font-size:25px;
+			line-height:20px;
+			height:20px;
+			font-weight:bold;
+			.rounded(10px);
+			text-decoration:underline;
+		}
+		.more{
+			font-size:10px;
+			width:55px;
+			height:15px;
+			position:absolute;
+			top:10px;
+			right:30px;
+			.button(#0066cc);
+		}
+		.pieces{
+			@size: 45px;
+			margin: 5px auto;
+			width: 330px;
+			.piece{
+				.rounded(6px);
+				width:@size;
+				height:@size;
+				margin:5px;
+				float:left;
+				cursor:pointer;
+				text-align:center;
+				line-height:@size;
+				color:white;
+				font-weight:bold;
+				font-size:20px;
+				&.blue{
+					.gradientFrom(#004c99);
+				}
+			}
+		}
 	}
 }
 
