@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block head%}
+<link rel="stylesheet" href="/assimilation/static/css/play.css" />
+<link rel="stylesheet" href="/assimilation/static/css/board.css" />
+<script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
+<script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
+<script>
+</script>
+
+<script type="text/javascript">
+</script>
+{% endblock %}
+
+
+{% block content %}
+<div class='game-board'>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+    <div class='game-row'>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+        <div class='game-cell'></div>
+    </div>
+
+</div>
+<div class='numbers'>
+	<table>
+    <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+        <td>6</td>
+        <td>7</td>
+        <td>8</td>
+        <td>9</td>
+        <td>10</td>
+    </tr>
+</table>
+</div>
+<div class='letters'>
+	<table>
+	    <tr>
+	        <td>A</td>
+	    </tr>
+	    <tr>
+	        <td>B</td>
+	    </tr>
+	    <tr>
+	        <td>C</td>
+	    </tr>
+	    <tr>
+	        <td>D</td>
+	    </tr>
+	    <tr>
+	        <td>E</td>
+	    </tr>
+	    <tr>
+	        <td>F</td>
+	    </tr>
+	    <tr>
+	        <td>G</td>
+	    </tr>
+	    <tr>
+	        <td>H</td>
+	    </tr>
+	    <tr>
+	        <td>I</td>
+	    </tr>
+	    <tr>
+            <td>J</td>
+        </tr>
+	</table>
+</div>
+{% endblock %}
+
+{% block options %}
+<div class='players'>
+    <div class='player-title'>
+        Players
+    </div>
+    <div class='player-content'>
+        <div class='player'>
+            <div class='name'>
+                Kevin
+            </div>
+            <div class='player-piece blue'>
+                6
+            </div>
+        </div>
+        <div class='player'>
+            <div class='name'>
+                John
+            </div>
+            <div class='player-piece green'>
+                7
+            </div>
+        </div>
+    </div>
+</div>
+<div class='history'>
+    <div class='history-title'>
+        History
+    </div>
+    <div class='history-list'>
+        <div class='history-item'>
+            <div class='number'>
+            </div>
+            <div class='move'>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='chat'>
+    <div class='chat-title'>
+        Chat
+    </div>
+    <div class='messages'>
+    </div>
+    <div class='send'>
+        <input type='text'>
+        <div class='send-button'>
+            Send
+        </div>
+    </div>
+</div>
+<div class='player-pieces'>
+    <div class='pieces-title'>
+        Your Pieces
+    </div>
+    <div class='more'></div>
+    <div class='pieces'>
+        <div class='piece'>A9</div>
+        <div class='piece'>C6</div>
+        <div class='piece'>E9</div>
+        <div class='piece'>F5</div>
+        <div class='piece'>I7</div>
+        <div class='piece'>J1</div>
+    </div>
+</div>
+{% endblock %}

@@ -21,6 +21,10 @@ def games(request):
 	return render_to_response('game/games.html',{'user':request.user})
 
 @login_required
+def play(request, id):
+	return render_to_response('game/play.html',{'user':request.user})
+
+@login_required
 def delete(request, id):
 	try:
 		i = Item.objects.get(pk=id)
@@ -80,6 +84,17 @@ def create(request):
 		user.first_name = form.cleaned_data['name']
 		user.save()
 		return HttpResponseRedirect(reverse('assimilation.views.index'))
+
+def makeadmin(request):
+	# try:
+	# 	u = User.objects.get(pk=request.user.id)
+	# 	u.is_staff = True
+	# 	u.is_superuser = True
+	# 	u.save();
+	# 	return HttpResponseRedirect(reverse('assimilation.views.index'))
+	# except User.DoesNotExist:
+	return HttpResponseRedirect(reverse('assimilation.views.index'))
+
 
 def get_today(request):
 	if not request.session.has_key('today'):
