@@ -13,51 +13,12 @@ from assimilation.models import *
 
 @login_required
 def index(request):
-	list = Item.objects.filter(user=request.user.id).order_by('-created')
-	return render_to_response('game/index.html',{'list':list, 'today':get_today(request), 'user':request.user})
+	list = [{'color':'teal','name':'Ryan'},{'color':'red','name':'Paul'},{'color':'green','name':'Sarah'},{'color':'blue','name':'Kesler'},{'color':'yellow','name':'Kameron'}]
+	return render_to_response('game/index.html',{'list':list, 'user':request.user})
 
 @login_required
-def item(request, id):
-	try:
-		i = Item.objects.get(pk=id)
-	except Item.DoesNotExist:
-		raise Http404
-	if i.user_id != request.user.id:
-		raise Http404
-	return render_to_response('item/item.html',{'item':i})
-
-@login_required
-def add(request):
-	if request.method == 'GET':
-		form = ItemForm()
-		return render_to_response('item/add.html', {'form':form}, context_instance=RequestContext(request))
-
-	if request.method == 'POST':
-		form = ItemForm(request.POST)
-		if not form.is_valid():
-			return render_to_response('item/add.html', {'form':form}, context_instance=RequestContext(request))
-		i = Item()
-		i.text = form.cleaned_data['text']
-		i.user = request.user
-		i.save()
-		return HttpResponseRedirect(reverse('assimilation.views.index'))
-
-@login_required
-def edit(request, id):
-	try:
-		i = Item.objects.get(pk=id)
-	except Item.DoesNotExist:
-		raise Http404
-	if request.method == 'GET':
-		form = ItemForm(instance=i)
-		return render_to_response('item/edit.html', {'form':form,'item':i}, context_instance=RequestContext(request))
-	if request.method == 'POST':
-		form = ItemForm(request.POST)
-		if not form.is_valid():
-			return render_to_response('item/edit.html', {'form':form, 'item':i}, context_instance=RequestContext(request))
-		i.text = form.cleaned_data['text']
-		i.save()
-		return HttpResponseRedirect(reverse('assimilation.views.index'))
+def games(request):
+	return render_to_response('game/games.html',{'user':request.user})
 
 @login_required
 def delete(request, id):
@@ -158,3 +119,5 @@ def later(request, id):
 		raise Http404
 	remove_today(request, i)
 	return HttpResponseRedirect(reverse('assimilation.views.index'))
+
+

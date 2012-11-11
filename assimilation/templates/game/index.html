@@ -17,6 +17,39 @@
 
 
 {% block content %}
+<div class='available-games-title'>
+	Available Games
+</div>
+<div class='available-games-list'>
+	{% for x in list %}
+	<div class='available-game'>
+		<div class='creator'>
+			<div class='name'>
+				{{x.name}}
+			</div>
+			<div class='color {{x.color}}'>
+			</div>
+		</div>
+		<div class='game-info'>
+			<table>
+			    <tr>
+			        <td class='info-name'>size</td>
+			        <td class='info-name'>created</td>
+			        <td class='info-name'>password?</td>
+			    </tr>
+			    <tr>
+			        <td class='info-content'>10x10</td>
+			        <td class='info-content'>Now</td>
+			        <td class='info-content'>Yes</td>
+			    </tr>
+			</table>
+		</div>
+		<div class='join'>
+			Join
+		</div>
+	</div>
+	{%endfor%}
+</div>
 {% endblock %}
 
 {% block options %}
