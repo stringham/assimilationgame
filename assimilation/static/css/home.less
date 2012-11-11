@@ -1,4 +1,22 @@
 @import "_elements";
+.blue{
+	.gradientFrom(#004c99);
+}
+.green{
+	.gradientFrom(#00cc00);
+}
+.yellow{
+	.gradientFrom(#cccc00);
+}
+.orange{
+	.gradientFrom(#ff8000);
+}
+.red{
+	.gradientFrom(#cc0000);
+}
+.teal{
+	.gradientFrom(#00cccc);
+}
 .options{
 	.game-create{
 		
@@ -17,10 +35,12 @@
 			input{
 				width:20px;
 				height:25px;
+				cursor:pointer;
 			}
 			label {
 				line-height:50px;
 				font-size:35px;
+				cursor:pointer;
 			}
 		}
 
@@ -46,24 +66,7 @@
 					height:@size;
 					margin:5px;
 					float:left;
-				}
-				.blue{
-					.gradientFrom(#004c99);
-				}
-				.green{
-					.gradientFrom(#00cc00);
-				}
-				.yellow{
-					.gradientFrom(#cccc00);
-				}
-				.orange{
-					.gradientFrom(#ff8000);
-				}
-				.red{
-					.gradientFrom(#cc0000);
-				}
-				.teal{
-					.gradientFrom(#00cccc);
+					cursor:pointer;
 				}
 			}
 		}
@@ -77,6 +80,7 @@
 				input{
 					width:25px;
 					height:25px;
+					cursor:pointer;
 				}
 			}
 			form{
@@ -108,58 +112,90 @@
 		}
 
 		.game-create-button{
-			@color:#0066cc;
-			outline: 0;
-			white-space: nowrap;
-			cursor: pointer;
-			border: solid 1px;
-			box-sizing: border-box;
-			.rounded(10px);
+			.button(#0066cc);
 			margin: 10px auto;
 			width:250px;
-
-			-webkit-touch-callout: none;
-			-webkit-user-select: none;
-			-khtml-user-select: none;
-			-moz-user-select: none;
-			-ms-user-select: none;
-			user-select: none;
-
 			font-size: 35px;
 			line-height: 50px;
 			height: 50px;
-			text-align: center;
-
-			border-color: .8*@color .6*@color .4*@color;
-			background-image: -webkit-linear-gradient(top, .9*@color + .1*#fff 0%, @color 100%); /* W3C */
-			box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.333);
-			text-shadow: 0 -1px 0 #000;
-			color: #fff;
-
-			&:hover {
-				border-color: .6*@color .6*@color .4*@color;
-				background-image: -webkit-linear-gradient(top, .8*@color + .2*#fff 0%, @color 100%); /* W3C */
-				box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
-			}
-			
-			&:active, &.selected {
-				border-color: .67*@color .8*@color .93*@color;
-				background-image: -webkit-linear-gradient(top, .95*@color 0%, @color 100%); /* W3C */
-				box-shadow: 0 -1px 0 0 #000, inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-			}
-
-			&[disabled], &[disabled]:hover, &[disabled]:active, &[disabled].selected {
-				color: .8*@color;
-				border-color: .88*@color;
-				background: .95*@color;
-				cursor: default;
-				box-shadow: inset 0 1px 0 0 .98*@color;
-				text-shadow: 0 1px 0 .98*@color;
-			}
 		}
 	}
 }
 
 .content{
+	.available-games-title{
+		position:absolute;
+		top:25px;
+		left:25px;
+		right:25px;
+		height:50px;
+		background:white;
+		.rounded(10px);
+		text-align:center;
+		font-size:35px;
+		line-height:50px;
+		font-weight:bold;
+	}
 
+	.available-games-list{
+		position:absolute;
+		left:25px;
+		right:25px;
+		bottom:25px;
+		height:430px;
+		.rounded(10px);
+		// background:white;
+		.available-game{
+			&:not(:first-child){
+				margin-top:-2px;
+			}
+			border:2px solid black;
+			height:80px;
+			background:lightblue;
+			.rounded(10px);
+			.creator{
+				float:left;
+				width:100px;
+				.name{
+					margin-top:5px;
+					text-align:center;
+				}
+				.color{
+					width:45px;
+					height:45px;
+					// .gradientFrom(#006600);
+					.rounded(6px);
+					margin:0 auto;
+				}
+			}
+			.game-info{
+				float:left;
+				table{
+					width:285px;
+					height:70px;
+					.info-name{
+						text-align:center;
+						line-height:35px;
+						height:35px;
+					}
+					.info-content{
+						height:45px;
+						text-align:center;
+						// line-height:40px;
+						font-size:25px;
+						font-weight:bold;
+					}
+				}
+			}
+			.join{
+				.button(#00994d);
+				float:left;
+				width:75px;
+				height:30px;
+				line-height:30px;
+				margin-top:25px;
+			}
+		}
+		overflow-y:scroll;
+	}
 }

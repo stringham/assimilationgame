@@ -36,6 +36,10 @@ assimilation.CreateGameDialog.prototype.createGame = function(){
 	if(usePassword){
 		var password = goog.dom.query('#game-password')[0].value;
 		var again = goog.dom.query('#game-pass-again')[0].value;
+		if(password.length == 0){
+			alert('Either enter a password or uncheck the password option!');
+			return;
+		}
 		if(password != again){
 			alert('Passwords do not match!');
 			return;
