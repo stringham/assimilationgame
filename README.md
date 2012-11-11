@@ -3,6 +3,11 @@ assimilation2
 
 Assimilation with Django
 
+Deploying to apfog
+------------------
+`af login`
+`af update assimilation-game`
+
 Setting Up A Development Environment
 ------------------------------------
 
