@@ -10,8 +10,85 @@
 	.game-list{
 		height:500px;
 		overflow-y:scroll;
+		.selected {
+			background:lightgray;
+		}
+		.game-list-item{
+			.blue{
+				color: #004c99;
+			}
+			.green{
+				color: #00cc00;
+			}
+			&:not(:first-child){
+				margin-top:-2px;
+			}
+			border:2px solid black;
+			height:100px;
+			.rounded(15px);
+			.message{
+				line-height:100px;
+				font-weight:bold;
+				text-align:center;
+			}
+			.game-item-left{
+				float:left;
+				width:200px;
+				.players{
+					.players-title{
+						text-align:center;
+						height:30px;
+						line-height:30px;
+					}
+					.player-list{
+						ul{
+							height:40px;
+						}
+						li{
+							float:left;
+							width:80px;
+							margin: 0 10px;
+							text-align:center;
+							font-size:20px;
+							font-weight:bold;
+						}
+						.active{
+							border:2px solid black;
+							.rounded(20px);
+							width:76px;
+						}
+					}
+					.last-move{
+						clear:both;
+						width:100%;
+						text-align:center;
+						span{
+							font-weight:bold;
+							margin-left:10px;
+						}
+					}
+				}
+			}
+			.game-item-right{
+				float:right;
+				width:100px;
+				text-align:center;
+				.status{
+					font-weight:bold;
+					height:30px;
+					line-height:30px;
+				}
+				.action-button{
+					.button(#0066cc);
+					width:70px;
+					margin: 15px auto;
+
+				}
+			}
+		}
 	}
 }
 
 .content{
+	
 }
