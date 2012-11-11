@@ -39,6 +39,7 @@ help:
 	@echo "  clean-app               Clean app target"
 	@echo "  clean-css               Clean CSS"
 	@echo "  clean-deps              Clean deps target"
+	@echo "  run                     Run the server"
 
 .PHONY: clean
 clean: clean-js clean-css clean-deps
@@ -128,3 +129,9 @@ clean-css-compiled:
 .SECONDARY: $(LESS_CSS_COMPILED)
 assimilation/static/css/%.css: assimilation/static/css/%.less $(LESS_FILES)
 	$(LESSC) $< -x > $@
+
+#######################################
+# CSS Targets                         #
+#######################################
+run:
+	python manage.py runserver
