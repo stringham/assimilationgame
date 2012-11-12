@@ -61,6 +61,7 @@ compilejs = $(CLOSUREBUILDER)                                                   
             -o compiled                                                              \
             -c tools/compiler/compiler.jar                                           \
             -f "--compilation_level=ADVANCED_OPTIMIZATIONS"                          \
+            -f "--externs=assimilation/static/js/app/externs.js"                     \
             -f "--warning_level=VERBOSE"                                             \
             -f "--jscomp_error=accessControls"                                       \
             -f "--jscomp_error=checkRegExp"                                          \
