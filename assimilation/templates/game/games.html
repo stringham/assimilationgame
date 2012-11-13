@@ -6,9 +6,13 @@
 <script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
 <script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
 <script>
+    goog.require('assimilation.GameList');
 </script>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        gamelist = new assimilation.GameList({{user.id}})
+    });
 </script>
 {% endblock %}
 
@@ -214,7 +218,7 @@
 			<div class='status green'>
 				Your Turn!
 			</div>
-			<div onclick="(function(){window.location.pathname='/assimilation/play/';})()" class='action-button'>
+			<div onclick="(function(){window.location.pathname='/assimilation/play/1';})()" class='action-button'>
 				Play
 			</div>
 		</div>

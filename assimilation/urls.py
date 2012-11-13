@@ -8,11 +8,12 @@ urlpatterns = patterns('assimilation.views',
     url(r'^home/$','index'),
     url(r'^games/$','games'),
     url(r'^play/(?P<id>[^/]+)$','play'),
-    url(r'^chats/(?P<game_id>[^/]+)$','chats'),
     url(r'^makeadmin$','makeadmin'),
     url(r'^auth/login/$', 'login'),
     url(r'^auth/logout/$', 'logout'),
     url(r'^auth/create/$', 'create'),
+    url(r'^chats/(?P<game_id>[^/]+)$','chats'),
+    url(r'^usergames/(?P<user_id>\d+)$','usergames'),
 
 )
 

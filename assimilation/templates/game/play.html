@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        chats = new assimilation.Chats(1,"{{ csrf_token }}");
+        chats = new assimilation.Chats({{game.id}});
     });
 </script>
 {% endblock %}

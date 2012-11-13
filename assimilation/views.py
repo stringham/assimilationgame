@@ -30,7 +30,7 @@ def play(request, id):
 	except Game.DoesNotExist:
 		return HttpResponseRedirect(reverse('assimilation.views.games'))
 
-	return render_to_response('game/play.html',{'user':request.user})
+	return render_to_response('game/play.html',{'user':request.user, 'game':game})
 
 @login_required
 def delete(request, id):
@@ -143,22 +143,36 @@ def later(request, id):
 	remove_today(request, i)
 	return HttpResponseRedirect(reverse('assimilation.views.index'))
 
-waitingRequests = []
+@login_required
+def usergames(request, user_id):
+	userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
+	games = [];
+	try:
+		gameUsers = GameUser.objects.filter(user = user_id)
+		for entry in gameUsers:
+			game = Game.objects.get(pk=entry.game.id)
+			game.users = game.gameuser_set.all()
+			games.append(game)
+			# print game.activePlayer
+	except GameUser.DoesNotExist:
+		pass
+
+	return render_to_response('ajax/userlist.json', {'current_unix_timestamp': time.time(), 'games':games}, context_instance=RequestContext(request))
+
 
 @login_required
 def chats(request, game_id):
 	if request.method == "GET":
-		userTime = float(request.GET.get('time',0))
-		test = datetime.fromtimestamp(userTime)
+		userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
 		try:
-			messages = Message.objects.filter(created__gt=test).filter(game=game_id)
+			messages = Message.objects.filter(created__gt=userTime).filter(game=game_id)
 		except Message.DoesNotExist:
-			render_to_response('chats/chats.json', {'current_unix_timestamp': time.time()})
+			render_to_response('ajax/chats.json', {'current_unix_timestamp': time.time()})
 		try:	
 			users = GameUser.objects.filter(game=game_id)
 		except GameUser.DoesNotExist:
 			pass
-		return render_to_response('chats/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':test}, context_instance=RequestContext(request))
+		return render_to_response('ajax/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':userTime}, context_instance=RequestContext(request))
 	if request.method == "POST":
 		content = request.POST.get('content','')
 		# print request.POST
@@ -169,4 +183,4 @@ def chats(request, game_id):
 		new_message.user = request.user
 		new_message.game = Game.objects.get(pk=game_id)
 		new_message.save()
-		return render_to_response('chats/chats.json',{'success': True}, context_instance=RequestContext(request))
+		return render_to_response('ajax/chats.json',{'success': True}, context_instance=RequestContext(request))
