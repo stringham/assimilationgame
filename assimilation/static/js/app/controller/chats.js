@@ -28,7 +28,7 @@ $.ajaxSetup({
      } 
 });
 
-assimilation.Chats = function(gameId, token){
+assimilation.Chats = function(gameId){
 	this.gameId = gameId;
 	this.container = $('.messages');
 	this.container.empty();
@@ -37,7 +37,6 @@ assimilation.Chats = function(gameId, token){
 	var me = this;
 	this.submitButton = $('.send-button');
 	this.input = $('.text-input > input');
-	this.token = token;
 	this.input.keypress(function (e) {
 		if (e.which == 13) {
 			me.sendMessage();

@@ -1,0 +1,24 @@
+{
+	"time": {{ current_unix_timestamp }},
+	"games": [
+		{%for game in games%}
+		{
+			"users":[
+				{%for user in game.users%}
+				{
+					"name":"{{user.user.first_name}}",
+					"id":"{{user.user.id}}",
+					"color":"{{user.color}}",
+					"score":"{{user.score}}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			],
+			"currentPlayer":"{{game.activePlayer.id}}",
+			"status":"{{game.status}}",
+			"state":{{game.state}},
+			"updated":"{{game.updated}}",
+			"id":"{{game.id}}"
+		} {% if not forloop.last %},{% endif %}
+		{% endfor %}
+	]
+}
