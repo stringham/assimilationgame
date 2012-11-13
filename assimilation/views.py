@@ -4,9 +4,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponseBadRequest
 from django.template import RequestContext
+from django.utils import simplejson
 from django.shortcuts import render_to_response
+from datetime import datetime
+import time
 
 
 from assimilation.models import *
@@ -22,6 +25,11 @@ def games(request):
 
 @login_required
 def play(request, id):
+	try:
+		game = Game.objects.get(pk=id)
+	except Game.DoesNotExist:
+		return HttpResponseRedirect(reverse('assimilation.views.games'))
+
 	return render_to_response('game/play.html',{'user':request.user})
 
 @login_required
@@ -135,4 +143,30 @@ def later(request, id):
 	remove_today(request, i)
 	return HttpResponseRedirect(reverse('assimilation.views.index'))
 
+waitingRequests = []
 
+@login_required
+def chats(request, game_id):
+	if request.method == "GET":
+		userTime = float(request.GET.get('time',0))
+		test = datetime.fromtimestamp(userTime)
+		try:
+			messages = Message.objects.filter(created__gt=test).filter(game=game_id)
+		except Message.DoesNotExist:
+			render_to_response('chats/chats.json', {'current_unix_timestamp': time.time()})
+		try:	
+			users = GameUser.objects.filter(game=game_id)
+		except GameUser.DoesNotExist:
+			pass
+		return render_to_response('chats/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':test}, context_instance=RequestContext(request))
+	if request.method == "POST":
+		content = request.POST.get('content','')
+		# print request.POST
+		if(len(content) == 0):
+			return HttpResponseBadRequest('Need to POST content to create a message')
+		new_message = Message()
+		new_message.text = content
+		new_message.user = request.user
+		new_message.game = Game.objects.get(pk=game_id)
+		new_message.save()
+		return render_to_response('chats/chats.json',{'success': True}, context_instance=RequestContext(request))

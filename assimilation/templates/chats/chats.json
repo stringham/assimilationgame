@@ -1,0 +1,27 @@
+{% if success %}
+{"success":true}
+{% else %}
+{
+	"time": {{ current_unix_timestamp }},
+	"messages": [
+		{%for message in messages%}
+		{
+			"text": "{{message.text}}",
+			"created": "{{message.created}}",
+			"name": "{{message.user.first_name}}",
+			"userid": "{{message.user.id}}"
+		} {% if not forloop.last %},{% endif %}
+		{% endfor %}
+	],
+	"users": {
+		{%for user in users%}
+			"{{user.user.id}}":{
+				"name": "{{user.user.first_name}}",
+				"color": "{{user.color}}"
+			}
+		{% if not forloop.last %},{% endif %}
+		{% endfor %}	
+	},
+	"utime": "{{usertime}}"
+}
+{% endif %}
