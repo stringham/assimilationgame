@@ -13,11 +13,13 @@ class Game(models.Model):
 	state = models.CharField('State', max_length=1000000)
 	password = models.CharField('Password', max_length=100, null=True)
 	salt = models.CharField('Salt', max_length=20, null=True)
+	activePlayer = models.ForeignKey(User, related_name="ActivePlayer", null=True)
 
 class GameUser(models.Model):
 	user = models.ForeignKey(User)
 	game = models.ForeignKey(Game)
 	color = models.CharField('Color', max_length=10)
+	score = models.IntegerField('Score')
 	won = models.BooleanField('Won')
 
 class Message(models.Model):
