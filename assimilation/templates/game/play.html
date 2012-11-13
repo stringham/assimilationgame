@@ -6,9 +6,13 @@
 <script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
 <script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
 <script>
+    goog.require("assimilation.Chats");
 </script>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        chats = new assimilation.Chats(1,"{{ csrf_token }}");
+    });
 </script>
 {% endblock %}
 

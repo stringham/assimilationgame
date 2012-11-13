@@ -1,4 +1,6 @@
-from assimilation.models import Item
+from assimilation.models import *
 from django.contrib import admin
 
-admin.site.register(Item)
+admin.site.register(Game)
+admin.site.register(Message)
+admin.site.register(GameUser)
