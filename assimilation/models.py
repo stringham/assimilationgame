@@ -3,14 +3,28 @@ from django.db import models
 from django import forms
 
 # Create your models here.
-class Item(models.Model):
-	user = models.ForeignKey(User)
-	text = models.CharField('Text', max_length=200)
+class Game(models.Model):
+	# id = models.CharField('id', max_length=40, primary_key=True)
 	created = models.DateTimeField('Date Created', auto_now_add=True)
+	creator = models.ForeignKey(User)
+	size = models.IntegerField('Size')
+	updated = models.DateTimeField('Updated', null=True)
+	status = models.CharField('Status', max_length=10)
+	state = models.CharField('State', max_length=1000000)
+	password = models.CharField('Password', max_length=100, null=True)
+	salt = models.CharField('Salt', max_length=20, null=True)
 
-class ItemForm(forms.ModelForm):
-	class Meta:
-		model = Item
+class GameUser(models.Model):
+	user = models.ForeignKey(User)
+	game = models.ForeignKey(Game)
+	color = models.CharField('Color', max_length=10)
+	won = models.BooleanField('Won')
+
+class Message(models.Model):
+	user = models.ForeignKey(User)
+	game = models.ForeignKey(Game)
+	text = models.CharField('Text', max_length=1000)
+	created = models.DateTimeField('Date Created', auto_now_add=True)
 
 class LoginForm(forms.Form):
 	username = forms.CharField(max_length=100)
