@@ -1,10 +1,9 @@
 @import "_reset";
+@import "_utils";
 @import "_elements";
 
 @game-frame-height: 550px;
 @game-frame-width: 900px;
-@bgColor: #007fff;
-@menuColor: #006600;
 @accentColor: #00beef;
 @menuHeight: 70px;
 
@@ -22,7 +21,7 @@ body {
 	left:0;
 	right:0;
 	top:0;
-	.gradientFrom(@bgColor);
+	.gradientFrom(@bg-color);
 	font-family: Arial, Helvetica, sans-serif;
 	color: black;
 	min-width: 920px;
@@ -30,7 +29,7 @@ body {
 
 .menu{
 	height: @menuHeight;
-	background: @menuColor;
+	background: @menu-color;
 	position:absolute;
 	top:0;
 	left:0;
@@ -158,15 +157,19 @@ body {
 		margin-top:-2px;
 		border:solid 2px black;
 		.account-update{
-			.button-color(#0066cc);
+			.button(@blue-button);
 			float:left;
 			margin-right:0;
+			line-height:27px;
+			height:30px;
 		}
 		.account-signout{
 			float:right;
-			.button-color(#660000);
+			.button(@red-button);
 			margin-left:0;
 			font-size:20px;
+			height:30px;
+			line-height:27px;
 		}
 	}
 }
@@ -184,7 +187,7 @@ body {
 		left:0;
 		width: 550px;
 		height: 550px;
-		.gradient(#003366, (#003366 - #333), #003366 + #111);
+		.gradient(@content-color, @content-color - #333, @content-color + #111);
 		.rounded(10px);
 	}
 
@@ -196,235 +199,5 @@ body {
 		height:550px;
 		.bw-gradient(#F2F2F2, 210, 255);
 		.rounded(10px);
-	}
-}
-
-
-.viewport {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	bottom: 0;
-	right: 200px;
-	overflow: scroll;
-	border: .2*#fff solid 1px;
-	background: #000 url(../images/grid_dots.png) -16px -16px;
-}
-
-.sidebar {
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: 200px;
-	bottom: 0;
-
-	& > .buttons {
-		padding: 5px;
-	}
-
-	header {
-		background: 2*@bgColor;
-		border-top: @accentColor solid 1px;
-		padding: 8px;
-		text-align: left;
-		font-size: 9px;
-		text-transform: uppercase;
-		text-shadow: 0 -1px 0 #000;
-		color: #fff;
-		box-shadow: 0 1px 3px 0 rgba(0,0,0,0.4);
-
-		.buttons {
-			float: right;
-		}
-
-		button.icon {
-			float: left;
-			margin-left: 3px;
-			position: relative;
-			top: -4px;
-			right: -4px;
-		}
-	}
-
-	.layers {
-		ol {
-			@itemPad: 8px;
-			counter-reset: layer;      /* Create a layer counter scope */
-
-			li {
-				list-style: none;
-				margin-left: 0;
-				position: relative;
-				display: block;
-				border-bottom: 1.2*@bgColor solid 1px;
-				cursor: default;
-				color: .6*#fff;
-
-				& > div {
-					padding: @itemPad;
-
-					&:before {
-						content: counter(layer) ":";
-						counter-increment: layer;  /* Add 1 to layer */
-						width: 27px;
-						text-align: right;
-						display: inline-block;
-						padding-right: 3px;
-					}
-				}
-
-				
-
-				input {
-					display: none;
-				}
-
-				.checkbox {
-					position: absolute;
-					top: 0;
-					left: 0;
-					margin: @itemPad;
-					height: 9px;
-					width: 9px;
-					border: .6*#fff solid 1px;
-					background: rgba(0,0,0,.5);
-					cursor: pointer;
-
-					& > div {
-						position: absolute;
-						top: 1px;
-						right: 1px;
-						bottom: 1px;
-						left: 1px;
-						background: .6*#fff;
-						display: none;
-					}
-				}
-
-				input:checked + div {
-					display: block;
-				}
-
-				&:hover {
-					background: 0.75*@bgColor;
-					color: #fff;
-				}
-
-				&.selected {
-					border-bottom-color: 1.5*@bgColor;
-					background: 0.5*@bgColor;
-					color: #fff;
-					box-shadow: inset 0 1px 5px 0 #000;
-
-					& > div {
-						border-right: @accentColor solid 4px;
-						background: -webkit-linear-gradient(left, rgba(0, 190, 239, 0) 75%, rgba(0, 190, 239, 0.2) 100%);
-					}
-				}
-			}
-		}
-	}
-
-	.properties {
-		ul {
-			// padding: 1px;
-
-			li {
-				margin: 3px;
-				list-style: none;
-				position: relative;
-				height: 21px;
-			}
-
-			label {
-				width: 64px;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				display: inline-block;
-				vertical-align: middle;
-				text-align: right;
-				line-height: 21px;
-
-				&::after {
-					content: ":"
-				}
-			}
-
-			input:not([type]) {
-				position: absolute;
-				top: 0;
-				left: 69px;
-				bottom: 0;
-				right: 0;
-				color: .8*#fff;
-				padding: 4px;
-				border: 1.5*@bgColor solid 1px;
-				background: @bgColor;
-				outline: none;
-				display: block;
-				margin: 0;
-
-				&:focus {
-					border-color: @bgColor;
-					border-bottom-color: 1.25*@bgColor;
-					background: 0.9*@bgColor;
-					box-shadow: inset 0 1px 5px 0 rgba(0,0,0,0.4);
-				}
-			}
-		}
-	}
-}
-
-.button-color(@color) {
-	outline: 0;
-	white-space: nowrap;
-	vertical-align: top;
-	cursor: pointer;
-	display: inline-block;
-	border: solid 1px;
-	border-radius: 3px;
-	box-sizing: border-box;
-	
-	font-size: 11px;
-	line-height: 28px;
-	height: 30px;
-	text-align: center;
-	padding: 0 15px;
-
-	border-color: .8*@color .6*@color .4*@color;
-	background-image: -webkit-linear-gradient(top, .9*@color + .1*#fff 0%, @color 100%); /* W3C */
-	box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.333);
-	text-shadow: 0 -1px 0 #000;
-	color: #fff;
-
-	&:hover {
-		border-color: .6*@color .6*@color .4*@color;
-		background-image: -webkit-linear-gradient(top, .8*@color + .2*#fff 0%, @color 100%); /* W3C */
-		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25), inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
-	}
-	
-	&:active, &.selected {
-		border-color: .67*@color .8*@color .93*@color;
-		background-image: -webkit-linear-gradient(top, .95*@color 0%, @color 100%); /* W3C */
-		box-shadow: 0 -1px 0 0 #000, inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-	}
-
-	&[disabled], &[disabled]:hover, &[disabled]:active, &[disabled].selected {
-		color: .8*@color;
-		border-color: .88*@color;
-		background: .95*@color;
-		cursor: default;
-		box-shadow: inset 0 1px 0 0 .98*@color;
-		text-shadow: 0 1px 0 .98*@color;
-	}
-
-	&.icon {
-		margin-right: 0;
-		line-height: 13px;
-		height: 19px;
-		width: 19px;
-		padding: 2px;
-		font-family: courier;
 	}
 }

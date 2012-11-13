@@ -1,4 +1,5 @@
 @import "_elements";
+@import "_utils";
 .options{
 	.games-title{
 		height:50px;
@@ -15,10 +16,22 @@
 		}
 		.game-list-item{
 			.blue{
-				color: #004c99;
+				color: @blue;
 			}
 			.green{
-				color: #00cc00;
+				color: @green;
+			}
+			.yellow{
+				color: @yellow;
+			}
+			.orange{
+				color: @orange;
+			}
+			.red{
+				color: @red;
+			}
+			.teal{
+				color: @teal;
 			}
 			&:not(:first-child){
 				margin-top:-2px;
@@ -32,7 +45,7 @@
 				text-align:center;
 			}
 			.delete{
-				.button(#660000);
+				.button(@red-button);
 				height:25px;
 				width:100px;
 				margin:0 auto;
@@ -87,7 +100,7 @@
 					line-height:30px;
 				}
 				.action-button{
-					.button(#0066cc);
+					.button(@blue-button);
 					width:70px;
 					margin: 15px auto;
 

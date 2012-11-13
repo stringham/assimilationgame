@@ -1,21 +1,22 @@
 @import "_elements";
+@import "_utils";
 .blue{
-	.gradientFrom(#004c99);
+	.gradientFrom(@blue);
 }
 .green{
-	.gradientFrom(#00cc00);
+	.gradientFrom(@green);
 }
 .yellow{
-	.gradientFrom(#cccc00);
+	.gradientFrom(@yellow);
 }
 .orange{
-	.gradientFrom(#ff8000);
+	.gradientFrom(@orange);
 }
 .red{
-	.gradientFrom(#cc0000);
+	.gradientFrom(@red);
 }
 .teal{
-	.gradientFrom(#00cccc);
+	.gradientFrom(@teal);
 }
 .options{
 	.game-create{
@@ -189,7 +190,7 @@
 				}
 			}
 			.join{
-				.button(#00994d);
+				.button(@green-button);
 				float:left;
 				width:75px;
 				height:30px;
