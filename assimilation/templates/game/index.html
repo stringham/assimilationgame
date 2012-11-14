@@ -6,11 +6,13 @@
 <script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
 <script>
 	goog.require("assimilation.CreateGameDialog");
+	goog.require("assimilation.AvailableGames")
 </script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
 		createGameDialog = new assimilation.CreateGameDialog();
+		availableGames = new assimilation.AvailableGames();
 	});
 </script>
 {% endblock %}

@@ -15,6 +15,7 @@ urlpatterns = patterns('assimilation.views',
     url(r'^chats/(?P<game_id>[^/]+)$','chats'),
     url(r'^usergames/(?P<user_id>\d+)$','usergames'),
     url(r'^game/create$','creategame'),
+    url(r'^game/available$','availablegames'),
 
 )
 

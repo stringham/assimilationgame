@@ -159,6 +159,17 @@ def usergames(request, user_id):
 
 	return render_to_response('ajax/userlist.json', {'current_unix_timestamp': time.time(), 'games':games}, context_instance=RequestContext(request))
 
+def availablegames(request):
+	userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
+	# games = [];
+	try:
+		games = Game.objects.filter(status="init")
+		for game in list(games):
+			game.color = game.gameuser_set.get(user = game.creator).color
+	except Game.DoesNotExist:
+		pass
+
+	return render_to_response('ajax/availablelist.json', {'current_unix_timestamp': time.time(), 'games':games}, context_instance=RequestContext(request))
 
 @login_required
 def chats(request, game_id):

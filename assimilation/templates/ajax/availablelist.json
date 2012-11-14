@@ -1,0 +1,15 @@
+{
+	"time": {{ current_unix_timestamp }},
+	"games": [
+		{%for game in games%}
+		{
+			"id":"{{game.id}}",
+			"color": "{{game.color}}",
+			"player": "{{game.creator.first_name}}",
+			"password":{% if game.password %} true {% else %} false {% endif %},
+			"created": "{{game.created}}",
+			"size":"{{game.size}}"
+		} {% if not forloop.last %},{% endif %}
+		{% endfor %}
+	]
+}
