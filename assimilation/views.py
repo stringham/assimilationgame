@@ -153,7 +153,6 @@ def usergames(request, user_id):
 			game = Game.objects.get(pk=entry.game.id)
 			game.users = game.gameuser_set.all()
 			games.append(game)
-			# print game.activePlayer
 	except GameUser.DoesNotExist:
 		pass
 
@@ -163,16 +162,21 @@ def usergames(request, user_id):
 @login_required
 def chats(request, game_id):
 	if request.method == "GET":
-		userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
-		try:
-			messages = Message.objects.filter(created__gt=userTime).filter(game=game_id)
-		except Message.DoesNotExist:
-			render_to_response('ajax/chats.json', {'current_unix_timestamp': time.time()})
-		try:	
-			users = GameUser.objects.filter(game=game_id)
-		except GameUser.DoesNotExist:
-			pass
+		for x in range(90):
+			userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
+			try:
+				messages = Message.objects.filter(created__gt=userTime).filter(game=game_id)
+			except Message.DoesNotExist:
+				render_to_response('ajax/chats.json', {'current_unix_timestamp': time.time()})
+			try:	
+				users = GameUser.objects.filter(game=game_id)
+			except GameUser.DoesNotExist:
+				pass
+			if(len(list(messages))>0):
+				return render_to_response('ajax/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':userTime}, context_instance=RequestContext(request))
+			time.sleep(.5)
 		return render_to_response('ajax/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':userTime}, context_instance=RequestContext(request))
+
 	if request.method == "POST":
 		content = request.POST.get('content','')
 		# print request.POST

@@ -45,8 +45,7 @@ assimilation.Chats = function(gameId){
 	this.submitButton.click(function(){
 		me.sendMessage();
 	});
-
-	this.interval = setInterval(function() {me.update();}, 1000);
+	this.update();
 }
 
 assimilation.Chats.prototype.appendMessage = function(name, message, color) {
@@ -71,6 +70,7 @@ assimilation.Chats.prototype.update = function() {
 			}
 			if(data.messages.length > 0)
 				me.container.animate({scrollTop:me.container.get(0).scrollHeight}, 'fast');
+			me.update();
 		},
 		'error': function(data){
 			console.log('error',data);
@@ -93,13 +93,9 @@ assimilation.Chats.prototype.sendMessage = function() {
 		'content': message
 	};
 
-	clearInterval(this.interval);
-
 	$.ajax('/assimilation/chats/' + this.gameId, {
 		'type':'POST',
 		'success': function(data){
-			me.update();
-			me.interval = setInterval(function(){me.update();}, 1000);
 		},
 		'error': function(){
 
