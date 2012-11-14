@@ -10,6 +10,7 @@ from django.utils import simplejson
 from django.shortcuts import render_to_response
 from datetime import datetime
 import time
+import uuid, hashlib
 
 
 from assimilation.models import *
@@ -188,3 +189,41 @@ def chats(request, game_id):
 		new_message.game = Game.objects.get(pk=game_id)
 		new_message.save()
 		return render_to_response('ajax/chats.json',{'success': True}, context_instance=RequestContext(request))
+
+@login_required
+def creategame(request):
+	if request.method == "POST":
+		post = request.POST
+		size = int(post.get('size',0))
+		color = post.get('color','')
+		password = post.get('password','')
+		if size not in [8,10,12]:
+			return render_to_response('ajax/creategame.json',{'success':"false", 'error':'invalid size submitted'})
+		if color not in ['blue','green','yellow','orange','red','teal']:
+			return render_to_response('ajax/creategame.json',{'success':"false", 'error':'invalid color submitted'})
+		game = Game()
+		game.creator = request.user
+		game.size = size
+		game.status = "init"
+		game.state = "{}"
+		game.updated = None
+		game.activePlayer = None
+		if len(password) > 0:
+			salt = uuid.uuid1().hex[:20]
+			password_hash = hashlib.sha384(salt + password).hexdigest()
+			game.salt = salt
+			game.password = password_hash
+		else:
+			game.password = None
+			game.salt = None
+		game.save()
+		player = GameUser()
+		player.user = request.user
+		player.game = game
+		player.color = color
+		player.score = 0
+		player.won = False
+		player.save()
+		return render_to_response('ajax/creategame.json',{'success':"true", 'id':game.id}, context_instance=RequestContext(request))
+	else:
+		return HttpResponseRedirect(reverse('assimilation.views.index'))
