@@ -33,7 +33,7 @@ assimilation.Chats = function(gameId){
 	this.container = $('.messages');
 	this.container.empty();
 	this.messages = [];
-	this.time = 0;
+	this.last_message = 0;
 	var me = this;
 	this.submitButton = $('.send-button');
 	this.input = $('.text-input > input');
@@ -45,15 +45,17 @@ assimilation.Chats = function(gameId){
 	this.submitButton.click(function(){
 		me.sendMessage();
 	});
-	this.update();
+	
+	me.update();
 }
+		
+		
 
 assimilation.Chats.prototype.appendMessage = function(name, message, color) {
 	// <div class='name blue'>Kevin</div>
 	// <div class='message'>Nice Move!</div>
-	console.log(message);
 	var user = $('<div>').addClass('name ' + color).text(goog.string.unescapeEntities(name));
-	var content = $('<div>').addClass('message').text(goog.string.unescapeEntities(message));
+	var content = $('<div>').addClass('message').text(goog.string.unescapeEntities(message).split(/([^\s-]{15})([^\s-]{15})/).join('\u200B'));
 	this.container.append(user).append(content);
 };
 
@@ -62,22 +64,32 @@ assimilation.Chats.prototype.update = function() {
 
 	$.ajax('/assimilation/chats/' + this.gameId,{
 		'success': function(data){
-			me.time = data.time;
+			if(data['success']){
+				me.update();
+				return;
+			}
+			me.last_message = data['latest'];
 			for(var i=0; i<data.messages.length; i++){
-				var color = data.users[data.messages[i].userid].color || 'black';
+				user = data.users[data.messages[i].userid];
+				if(user)
+					var color = user.color;
+				else
+					var color = 'black';
 
 				me.appendMessage(data.messages[i].name, data.messages[i].text, color);
 			}
 			if(data.messages.length > 0)
 				me.container.animate({scrollTop:me.container.get(0).scrollHeight}, 'fast');
-			me.update();
+			setTimeout(function() {
+				me.update();
+			}, 500);
 		},
 		'error': function(data){
 			console.log('error',data);
 		},
 		'dataType':'json',
 		'data':{
-			'time':this.time
+			'last_message':this.last_message
 		}
 	});
 };

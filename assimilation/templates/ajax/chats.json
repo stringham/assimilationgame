@@ -2,13 +2,13 @@
 {"success":true}
 {% else %}
 {
-	"time": {{ current_unix_timestamp }},
+	"latest": {{ last_message }},
 	"messages": [
 		{%for message in messages%}
 		{
 			"text": "{{message.text}}",
-			"created": "{{message.created}}",
 			"name": "{{message.user.first_name}}",
+			"created": "{{message.created}}",
 			"userid": "{{message.user.id}}"
 		} {% if not forloop.last %},{% endif %}
 		{% endfor %}

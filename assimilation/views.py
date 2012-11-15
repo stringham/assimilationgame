@@ -4,14 +4,14 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, Http404, HttpResponseBadRequest
+from django.http import HttpResponseRedirect, Http404, HttpResponseBadRequest, HttpResponse
 from django.template import RequestContext
 from django.utils import simplejson
 from django.shortcuts import render_to_response
 from datetime import datetime
 import time
 import uuid, hashlib
-
+import simplejson as json
 
 from assimilation.models import *
 
@@ -174,20 +174,16 @@ def availablegames(request):
 @login_required
 def chats(request, game_id):
 	if request.method == "GET":
-		for x in range(90):
-			userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
-			try:
-				messages = Message.objects.filter(created__gt=userTime).filter(game=game_id)
-			except Message.DoesNotExist:
-				render_to_response('ajax/chats.json', {'current_unix_timestamp': time.time()})
-			try:	
-				users = GameUser.objects.filter(game=game_id)
-			except GameUser.DoesNotExist:
-				pass
-			if(len(list(messages))>0):
-				return render_to_response('ajax/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':userTime}, context_instance=RequestContext(request))
-			time.sleep(.5)
-		return render_to_response('ajax/chats.json',{'current_unix_timestamp': time.time(), 'messages': messages, 'users':users, 'usertime':userTime}, context_instance=RequestContext(request))
+		requestedId = int(request.GET.get('last_message',0))
+		try:
+			messages = Message.objects.filter(id__gt=requestedId).filter(game=game_id)
+		except Message.DoesNotExist:
+			render_to_response('ajax/chats.json', {}, context_instance=RequestContext(request))
+		try:	
+			users = GameUser.objects.filter(game=game_id)
+		except GameUser.DoesNotExist:
+			pass
+		return render_to_response('ajax/chats.json',{'last_message': Message.objects.all().order_by("-pk")[0].id, 'messages': messages, 'users':users}, mimetype='application/json', context_instance=RequestContext(request))
 
 	if request.method == "POST":
 		content = request.POST.get('content','')
@@ -195,11 +191,11 @@ def chats(request, game_id):
 		if(len(content) == 0):
 			return HttpResponseBadRequest('Need to POST content to create a message')
 		new_message = Message()
-		new_message.text = content
+		new_message.text = content.replace("\\","\\\\").replace("\n","\\n").replace("\t","\\t")
 		new_message.user = request.user
 		new_message.game = Game.objects.get(pk=game_id)
 		new_message.save()
-		return render_to_response('ajax/chats.json',{'success': True}, context_instance=RequestContext(request))
+		return render_to_response('ajax/chats.json',{'success': True}, mimetype='application/json', context_instance=RequestContext(request))
 
 @login_required
 def creategame(request):
