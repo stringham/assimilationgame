@@ -63,7 +63,7 @@ assimilation.CreateGameDialog.prototype.makeGame = function() {
 	var again = this.passwordOption.find('#game-pass-again').val();
 	var data = {
 		"size":size,
-		"color":color,
+		"color":color
 	};
 
 	if(usePassword){
@@ -83,7 +83,7 @@ assimilation.CreateGameDialog.prototype.makeGame = function() {
 		'data':data,
 		'dataType':'json',
 		'success':function(response){
-			console.log(response);
+			// console.log(response);
 			// window.location.pathname = "/assimilation/games";
 		}
 	});
