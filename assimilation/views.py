@@ -234,3 +234,42 @@ def creategame(request):
 		return render_to_response('ajax/creategame.json',{'success':"true", 'id':game.id}, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect(reverse('assimilation.views.index'))
+
+@login_required
+def joingame(request, game_id):
+	if request.method == "POST":
+		post = request.POST
+		color = post.get('color','')
+		password = post.get('password','')
+		print password
+		try:
+			game = Game.objects.get(pk=game_id)
+		except Game.DoesNotExist:
+			return HttpResponse('{"success":false, "error":"Game does not exist"}', mimetype="application/json")
+		if game.status != "init":
+			return HttpResponse('{"success":false, "error":"Can\'t join this game"}', mimetype="application/json")
+		if game.password:
+			if hashlib.sha384(game.salt + password).hexdigest() != game.password:
+				return HttpResponse('{"success":false, "error":"Invalid password"}', mimetype="application/json")
+		if game.creator == request.user:
+			return HttpResponse('{"success":false, "error":"Can\'t join your own game"}', mimetype="application/json")
+		colors = ['blue','green','yellow','orange','red','teal']
+		remove = game.gameuser_set.get(user=game.creator).color
+		colors.remove(remove)
+		if color not in colors:
+			return HttpResponse('{"success":false, "error":"invalid color submitted"}', mimetype="application/json")
+
+		game.status = "playing"
+		game.activePlayer = game.creator
+		game.save()
+		player = GameUser()
+		player.game = game
+		player.color = color
+		player.user = request.user
+		player.score = 0
+		player.won = False
+		player.save()
+		return HttpResponse('{"success":true}', mimetype="application/json")
+	else:
+		raise Http404
+
