@@ -201,3 +201,108 @@
 		overflow-y:scroll;
 	}
 }
+
+.join-game {
+	display:none;
+	position:fixed;
+	background:white;
+	width:400px;
+	height:180px;
+	top:250px;
+	left:50%;
+	margin-left:-200px;
+	.rounded(15px);
+	.bw-gradient(@color: #F5F5F5, @start: 200, @stop: 240);
+	.drop-shadow(1px,1px,6px,1);
+
+	.cancel{
+		width:30px;
+		height:30px;
+		position:absolute;
+		top:10px;
+		right:10px;
+		cursor:pointer;
+		background: rgba(0,0,0,0) url(../images/cancel.png);
+	}
+
+	.title{
+		text-align:center;
+		font-weight:bold;
+		line-height:30px;
+		margin-top:10px;
+	}
+
+	.pick{
+		text-align:center;
+		line-height:30px;
+		text-decoration:underline;
+		font-size:20px;
+	}
+
+	.join-color-pick{
+		@size: 45px;
+		margin: 0 auto;
+		width: 330px;
+		height:65px;
+		input[type='radio']{
+			display:none;
+			&:checked + label{
+				border:8px solid black;
+				width: @size - 16;
+				height:@size - 16;
+			}
+		}
+		.color-choice{
+			.rounded(6px);
+			width:@size;
+			height:@size;
+			margin:5px;
+			float:left;
+			cursor:pointer;
+		}
+		.off-limits{
+			opacity:0.25;
+			-moz-user-select: none; 
+			-khtml-user-select: none; 
+			-webkit-user-select: none; 
+			-o-user-select: none; 
+		}
+	}
+
+	.enter-password{
+		float:left;
+		margin-left:20px;
+		width:290px;
+		.pw-title{
+			height:30px;
+			line-height:30px;
+			width:80px;
+			float:left;
+		}
+		input{
+			opacity:0.6;
+			border:none;
+			font-size:30px;
+			width:180px;
+			.rounded(10px);
+			height:30px;
+			padding:0 10px;
+			&:focus{
+				outline:none;
+			}
+		}
+	}
+
+	.join-button{
+		.button(@blue-button);
+		// float:left;
+		width:75px;
+		height:30px;
+		line-height:30px;
+		margin:0 auto;
+		// .button(@green-button);
+		&.pw{
+			float:left;
+		}
+	}
+}

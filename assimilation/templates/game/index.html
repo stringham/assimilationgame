@@ -58,3 +58,31 @@
 <div class='game-create'>
 </div>
 {% endblock %}
+
+{% block extra %}
+<div class="join-game">
+	<div class="cancel"></div>
+	<div class="title">Join John's Game!</div>
+	<div class="pick">Pick Your Color:</div>
+	<div class="join-color-pick">
+		<form>
+			<input type="radio" name="color" id="join-blue" value="blue" checked="checked">
+			<label for="join-blue" class="color-choice blue"></label>
+			<input type="radio" name="color" id="join-green" value="green">
+			<label for="join-green" class="color-choice green"></label>
+			<input type="radio" name="color" id="join-yellow" value="yellow">
+			<label for="join-yellow-no" class="color-choice yellow off-limits"></label>
+			<input type="radio" name="color" id="join-orange" value="orange">
+			<label for="join-orange" class="color-choice orange"></label>
+			<input type="radio" name="color" id="join-red" value="red">
+			<label for="join-red" class="color-choice red"></label>
+			<input type="radio" name="color" id="join-teal" value="teal">
+			<label for="join-teal" class="color-choice teal"></label>
+		</form>
+	</div>
+	<div class='enter-password'>
+		<div class='pw-title'>Password:</div><input type='password'>
+	</div>
+	<div class="join-button pw">Join</div>
+</div>
+{% endblock %}
