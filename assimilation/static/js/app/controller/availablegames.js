@@ -1,5 +1,32 @@
 goog.provide('assimilation.AvailableGames');
+goog.require('assimilation.JoinGameDialog');
 
+function getCookie(name)
+{
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+$.ajaxSetup({ 
+     beforeSend: function(xhr, settings) {
+         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+             // Only send the token to relative URLs i.e. locally.
+             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+         }
+     } 
+});
 /**
 * @constructor
 */
@@ -7,6 +34,8 @@ assimilation.AvailableGames = function(){
 	this.container = $('.available-games-list');
 	this.games = [];
 	this.container.empty();
+	this.update();
+	this.joinGameDialog = new assimilation.JoinGameDialog();
 }
 
 assimilation.AvailableGames.prototype.addGameToList = function(player, playercolor, size, created, password, id) {
@@ -30,7 +59,7 @@ assimilation.AvailableGames.prototype.addGameToList = function(player, playercol
 	table.append(row2);
 	var button = $('<div>').addClass('join').text('Join');
 	button.click(function(){
-		me.joinGame(id, password);
+		me.joinGame(id, player, playercolor, password);
 	});
 	creator.append(name).append(color);
 	info.append(table);
@@ -52,6 +81,6 @@ assimilation.AvailableGames.prototype.update = function() {
 	});
 };
 
-assimilation.AvailableGames.prototype.joinGame = function(id, password) {
-	alert('not implemented yet');
+assimilation.AvailableGames.prototype.joinGame = function(id, player, playercolor, password) {
+	this.joinGameDialog.show(id, player, playercolor, password);
 };
