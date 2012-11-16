@@ -37,7 +37,7 @@ class Assimilation:
 		result = {}
 		result['i'] = self.id
 		result['w'] = self.width
-		result['h'] = self.height
+		result['he'] = self.height
 		result['c'] = []
 		result['h'] = []
 		result['p'] = []
@@ -58,7 +58,7 @@ class Assimilation:
 		g = json.loads(JSON)
 		self.id = g['i']
 		self.width = g['w']
-		self.height = g['h']
+		self.height = g['he']
 		self.board = g['b']
 
 		for claim in g['c']:
@@ -158,6 +158,27 @@ class Assimilation:
 				else:
 					print self.board[x][y],
 			print ''
+	def getStateFor(self, playerid, includeHistory=False):
+		result = {}
+		result['i'] = self.id
+		result['w'] = self.width
+		result['he'] = self.height
+		result['c'] = []
+		result['p'] = []
+		result['pi'] = len(self.pile)
+		if includeHistory:
+			result['h'] = []
+			for claim in self.history:
+				result['h'].append(claim.serialize())
+
+		for claim in self.claims:
+			result['c'].append(claim.serialize())
+		for player in self.players:
+			if player.id == playerid:
+				result['p'].append(player.serialize())
+			else:
+				result['p'].append(player.serializeHidden())
+		return json.dumps(result)
 
 class Tile:
 
@@ -208,6 +229,13 @@ class Player:
 		result['h'] = []
 		for tile in self.hand:
 			result['h'].append(tile.serialize())
+		return result
+
+	def serializeHidden(self):
+		result = {}
+		result['i'] = self.id
+		result['s'] = self.score
+		result ['h'] = len(self.hand)
 		return result
 
 	def addTile(tile):
