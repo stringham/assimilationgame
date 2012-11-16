@@ -276,3 +276,17 @@ def joingame(request, game_id):
 	else:
 		raise Http404
 
+def deletegame(request, game_id):
+	if request.is_ajax():
+		try:
+			game = Game.objects.get(pk=game_id)
+		except:
+			return HttpResponse('{"success":false, "error":"Game does not exist"}', mimetype="application/json")
+
+		if game.status != "init":
+			return HttpResponse('{"success":false, "error":"Can only delete games that haven\'t started yet"}', mimetype="application/json")
+
+		game.delete()
+
+		return HttpResponse('{"success":true}', mimetype="application/json")
+	raise Http404

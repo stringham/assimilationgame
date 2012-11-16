@@ -15,7 +15,9 @@
 			],
 			"currentPlayer":"{{game.activePlayer.id}}",
 			"status":"{{game.status}}",
+			{% autoescape off %}
 			"state":{{game.state}},
+			{% endautoescape %}
 			"updated":"{{game.updated}}",
 			"id":"{{game.id}}"
 		} {% if not forloop.last %},{% endif %}
