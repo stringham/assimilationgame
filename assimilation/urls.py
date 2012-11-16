@@ -17,6 +17,7 @@ urlpatterns = patterns('assimilation.views',
     url(r'^game/create$','creategame'),
     url(r'^game/available$','availablegames'),
     url(r'^game/join/(?P<game_id>[^/]+)$','joingame'),
+    url(r'^game/delete/(?P<game_id>[^/]+)$','deletegame'),
 
 )
 

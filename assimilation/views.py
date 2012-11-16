@@ -12,13 +12,14 @@ from datetime import datetime
 import time
 import uuid, hashlib
 import simplejson as json
-
+import random
+from game.assimilation import Assimilation
+import HTMLParser
 from assimilation.models import *
 
 @login_required
 def index(request):
-	list = [{'color':'teal','name':'Ryan'},{'color':'red','name':'Paul'},{'color':'green','name':'Sarah'},{'color':'blue','name':'Kesler'},{'color':'yellow','name':'Kameron'}]
-	return render_to_response('game/index.html',{'list':list, 'user':request.user})
+	return render_to_response('game/index.html',{}, context_instance=RequestContext(request))
 
 @login_required
 def games(request):
@@ -260,7 +261,9 @@ def joingame(request, game_id):
 			return HttpResponse('{"success":false, "error":"invalid color submitted"}', mimetype="application/json")
 
 		game.status = "playing"
-		game.activePlayer = game.creator
+		game.activePlayer = game.creator if random.random() < 0.5 else request.user
+		g = Assimilation(game.id, game.size, [request.user.id,game.creator.id])
+		game.state = g.export()
 		game.save()
 		player = GameUser()
 		player.game = game

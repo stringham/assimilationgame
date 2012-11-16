@@ -79,12 +79,25 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 		var deleteButton = $('<div>').addClass('delete').text('Delete Game');
 		deleteButton.click(function(e){
 			e.stopPropagation();
-			alert('Not Implemented');
+			$.ajax('/assimilation/game/delete/' + game.id, {
+				'success': function(info){
+					if(info['success']){
+						newGameContainer.remove();
+					}
+					else{
+						if(info['error'])
+							alert(info['error']);
+					}
+				}
+			})
 		});
 		newGameContainer.append(message).append(deleteButton);
 	}
 	
-	this.games[game['id']] = newGameContainer;
+	this.games[game['id']] = {
+		'dom':newGameContainer,
+		'state': game['state']
+	};
 	this.container.append(newGameContainer);
 	newGameContainer.click(function(){
 		$('.game-list-item').removeClass('selected');
