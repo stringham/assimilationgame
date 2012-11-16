@@ -16,7 +16,7 @@ assimilation.UserGameList = function(userid){
 
 assimilation.UserGameList.prototype.update = function() {
 	var me = this;
-	$.ajax('/assimilation/usergames/' + this.userid, {
+	$.ajax('/assimilation/usergames/', {
 		'success': function(data){
 			me.time = data['time'];
 			var games = data['games'];

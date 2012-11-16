@@ -146,7 +146,8 @@ def later(request, id):
 	return HttpResponseRedirect(reverse('assimilation.views.index'))
 
 @login_required
-def usergames(request, user_id):
+def usergames(request):
+	user_id = request.user.id
 	userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
 	games = [];
 	try:
