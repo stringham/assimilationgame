@@ -16,7 +16,7 @@
 			"currentPlayer":"{{game.activePlayer.id}}",
 			"status":"{{game.status}}",
 			{% autoescape off %}
-			"state":{{game.state}},
+			"state":{{game.playerState}},
 			{% endautoescape %}
 			"updated":"{{game.updated}}",
 			"id":"{{game.id}}"

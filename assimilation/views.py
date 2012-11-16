@@ -155,6 +155,10 @@ def usergames(request):
 		for entry in gameUsers:
 			game = Game.objects.get(pk=entry.game.id)
 			game.users = game.gameuser_set.all()
+			game.playerState = {}
+			if game.status != 'init':
+				temp = Assimilation(JSON=game.state)
+				game.playerState = temp.getStateFor(user_id)
 			games.append(game)
 	except GameUser.DoesNotExist:
 		pass
