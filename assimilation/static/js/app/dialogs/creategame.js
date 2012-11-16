@@ -84,7 +84,7 @@ assimilation.CreateGameDialog.prototype.makeGame = function() {
 		'dataType':'json',
 		'success':function(response){
 			// console.log(response);
-			// window.location.pathname = "/assimilation/games";
+			window.location.pathname = "/assimilation/games";
 		}
 	});
 };
