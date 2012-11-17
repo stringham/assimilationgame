@@ -116,6 +116,7 @@ class Assimilation:
 			return True
 
 		else:
+			print tile, player, self.playersById[player].hand
 			return False
 
 	def calculateScores(self):
@@ -182,9 +183,9 @@ class Assimilation:
 
 class Tile:
 
-	def __init__(self, x=None, y=None, JSON=None):
-		self.x = x
-		self.y = y
+	def __init__(self, x=0, y=0, JSON=None):
+		self.x = int(x)
+		self.y = int(y)
 		if JSON is not None:
 			self.x = JSON['x']
 			self.y = JSON['y']
