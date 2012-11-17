@@ -204,6 +204,26 @@ def chats(request, game_id):
 		return render_to_response('ajax/chats.json',{'success': True}, mimetype='application/json', context_instance=RequestContext(request))
 
 @login_required
+def getgame(request, game_id):
+	if request.method == 'GET':
+		updated = datetime.fromtimestamp(float(request.GET.get('updated',0)))
+		print updated
+		try:
+			game = Game.objects.get(pk=game_id, updated__gt=updated)
+			game.users = game.gameuser_set.all()
+		except Game.DoesNotExist:
+			return HttpResponse('{"success":true}', mimetype="application/json")
+		if game.state == 'init':
+			return render_to_response('ajax/game.json', {"game":game}, context_instance=RequestContext(request))
+
+		temp = Assimilation(JSON=game.state)
+		state = temp.getStateFor(request.user.id, True)
+		return render_to_response('ajax/game.json', {"game":game, "state":state}, context_instance=RequestContext(request))
+
+	return HttpResponse('{"success":false, "error":"cannot use ' + request.method + '"}', mimetype="application/json")
+
+
+@login_required
 def creategame(request):
 	if request.method == "POST":
 		post = request.POST

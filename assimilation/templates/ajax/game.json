@@ -1,0 +1,22 @@
+{
+	"game": {
+			"users":[
+				{%for user in game.users%}
+				{
+					"name":"{{user.user.first_name}}",
+					"id":"{{user.user.id}}",
+					"color":"{{user.color}}",
+					"score":"{{user.score}}"
+				}{% if not forloop.last %},{% endif %}
+			{% endfor %}
+			],
+			"currentPlayer":"{{game.activePlayer.id}}",
+			"status":"{{game.status}}",
+			{% autoescape off %}
+			"state":{{state}},
+			{% endautoescape %}
+			"updated":"{{game.updated|date:"U.u"}}",
+			"id":"{{game.id}}",
+			"size":"{{game.size}}"
+		} 
+}
