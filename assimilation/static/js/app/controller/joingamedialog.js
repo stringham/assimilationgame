@@ -1,5 +1,5 @@
 goog.provide('assimilation.JoinGameDialog');
-
+goog.require('a.util');
 
 assimilation.JoinGameDialog = function(){
 	var me = this;

@@ -1,33 +1,9 @@
 goog.provide('assimilation.Chats');
 goog.require('goog.string');
-
-function getCookie(name)
-{
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-
-$.ajaxSetup({ 
-     beforeSend: function(xhr, settings) {
-         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-             // Only send the token to relative URLs i.e. locally.
-             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-         }
-     } 
-});
-
+goog.require('a.util');
+/**
+* @constructor
+*/
 assimilation.Chats = function(gameId){
 	this.gameId = gameId;
 	this.container = $('.messages');
@@ -70,7 +46,7 @@ assimilation.Chats.prototype.update = function() {
 			}
 			me.last_message = data['latest'];
 			for(var i=0; i<data.messages.length; i++){
-				user = data.users[data.messages[i].userid];
+				var user = data['users'][data['messages'][i]['userid']];
 				if(user)
 					var color = user.color;
 				else
@@ -85,7 +61,6 @@ assimilation.Chats.prototype.update = function() {
 			}, 500);
 		},
 		'error': function(data){
-			console.log('error',data);
 		},
 		'dataType':'json',
 		'data':{

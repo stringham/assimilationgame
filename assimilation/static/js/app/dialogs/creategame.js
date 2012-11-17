@@ -1,33 +1,6 @@
 goog.provide('assimilation.CreateGameDialog');
 goog.require('goog.array');
-
-
-function getCookie(name)
-{
-	var cookieValue = null;
-	if (document.cookie && document.cookie != '') {
-		var cookies = document.cookie.split(';');
-		for (var i = 0; i < cookies.length; i++) {
-			var cookie = jQuery.trim(cookies[i]);
-			// Does this cookie string begin with the name we want?
-
-			if (cookie.substring(0, name.length + 1) == (name + '=')) {
-				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-				break;
-			}
-		}
-	}
-	return cookieValue;
-}
-
-$.ajaxSetup({ 
-	 beforeSend: function(xhr, settings) {
-		 if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
-			 // Only send the token to relative URLs i.e. locally.
-			 xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-		 }
-	 } 
-});
+goog.require('a.util');
 
 /**
 * @constructor
@@ -101,7 +74,7 @@ assimilation.CreateGameDialog.prototype.createSizeOptions = function() {
 	$('<span>').addClass('game-create-size-title').text('Size of Board').appendTo(result);
 	var options = $('<div>').addClass('game-create-size-options');
 	var form = $('<form>');
-	goog.array.forEach(this.sizes, function(size,i){
+	a.util.map(this.sizes, function(size,i){
 		var input = $('<input>').attr({'type':'radio','name':'size','id':'size-'+size, 'value':size, 'checked':i==1});
 		var label = $('<label>').attr('for','size-'+size).append($('<a>').text(size+'x'+size));
 		form.append(input);
@@ -118,7 +91,7 @@ assimilation.CreateGameDialog.prototype.createColorOptions = function() {
 	result.addClass('game-create-color').text('Your Color').append($('<br>'));
 	var colors = $('<div>').addClass('colors');
 	var form = $('<form>');
-	goog.array.forEach(this.colors, function(color,i){
+	a.util.map(this.colors, function(color,i){
 		var input = $('<input>').attr({'type':'radio','name':'color','id':color, 'value':color, 'checked':i==0});
 		var label = $('<label>').attr('for',color).addClass('color-choice').addClass(color);
 		form.append(input);
