@@ -1,5 +1,6 @@
 goog.provide('assimilation.UserGameList');
-
+goog.require('assimilation.Board');
+goog.require('a.util');
 /**
 *
 * @constructor
@@ -11,6 +12,7 @@ assimilation.UserGameList = function(userid){
 	this.update();
 	this.games = {};
 	this.time = 0;
+	this.board = new assimilation.Board();
 }
 
 
@@ -29,10 +31,12 @@ assimilation.UserGameList.prototype.update = function() {
 };
 
 assimilation.UserGameList.prototype.addGame = function(game) {
+	var me=this;
 	if(this.games[game['id']]){
 		this.games[game['id']].remove();
 	}
 	var newGameContainer = $("<div>").addClass('game-list-item');
+	var users = {};
 	if(game['status'] == 'playing'){
 		var left = $('<div>').addClass('game-item-left');
 		var players = $('<div>').addClass('players').append($('<div>').addClass('players-title').text('Players'));	
@@ -44,6 +48,7 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 				li.addClass('active');
 			li.text(user['name']);
 			list.append(li);
+			users[user['id']] = user;
 		}
 		players.append($('<div>').addClass('player-list').append(list));
 
@@ -96,11 +101,21 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 	
 	this.games[game['id']] = {
 		'dom':newGameContainer,
-		'state': game['state']
+		'state': game['state'],
+		'players': users,
+		'size': game['size']
 	};
 	this.container.append(newGameContainer);
 	newGameContainer.click(function(){
 		$('.game-list-item').removeClass('selected');
 		newGameContainer.addClass('selected');
+		me.showGame(game['id']);
 	});
+};
+
+assimilation.UserGameList.prototype.showGame = function(id) {
+	var state = this.games[id]['state'];
+	var players = this.games[id]['players'];
+	var size = this.games[id]['size'];
+	this.board.showState(state,players, size);
 };

@@ -6,12 +6,12 @@
 <script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
 <script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
 <script>
-    goog.require("assimilation.Chats");
+    goog.require("assimilation.Play");
 </script>
 
 <script type="text/javascript">
     $(document).ready(function() {
-        chats = new assimilation.Chats({{game.id}});
+        play = new assimilation.Play({{game.id}});
     });
 </script>
 {% endblock %}
@@ -19,141 +19,20 @@
 
 {% block content %}
 <div class='game-board'>
+    {% for x in size%}
     <div class='game-row'>
+        {%for y in size%}
         <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
+        {% endfor %}
     </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-    <div class='game-row'>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-        <div class='game-cell'></div>
-    </div>
-
+    {% endfor %}
 </div>
 <div class='numbers'>
 	<table>
     <tr>
-        <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>4</td>
-        <td>5</td>
-        <td>6</td>
-        <td>7</td>
-        <td>8</td>
-        <td>9</td>
-        <td>10</td>
+        {%for x in size%}
+        <td>{{x}}</td>
+        {%endfor%}
     </tr>
 </table>
 </div>

@@ -13,7 +13,7 @@ import time
 import uuid, hashlib
 import simplejson as json
 import random
-from game.assimilation import Assimilation
+from game.assimilation import Assimilation, Tile
 import HTMLParser
 from assimilation.models import *
 
@@ -32,7 +32,7 @@ def play(request, id):
 	except Game.DoesNotExist:
 		return HttpResponseRedirect(reverse('assimilation.views.games'))
 
-	return render_to_response('game/play.html',{'user':request.user, 'game':game})
+	return render_to_response('game/play.html',{'user':request.user, 'game':game, 'size': range(1,game.size+1)}, context_instance=RequestContext(request))
 
 @login_required
 def delete(request, id):
@@ -189,7 +189,11 @@ def chats(request, game_id):
 			users = GameUser.objects.filter(game=game_id)
 		except GameUser.DoesNotExist:
 			pass
-		return render_to_response('ajax/chats.json',{'last_message': Message.objects.all().order_by("-pk")[0].id, 'messages': messages, 'users':users}, mimetype='application/json', context_instance=RequestContext(request))
+		chats = Message.objects.all().order_by("-pk")
+		index = 0
+		if len(chats)>0:
+			index = chats[0].id
+		return render_to_response('ajax/chats.json',{'last_message': index, 'messages': messages, 'users':users}, mimetype='application/json', context_instance=RequestContext(request))
 
 	if request.method == "POST":
 		content = request.POST.get('content','')
@@ -289,6 +293,7 @@ def joingame(request, game_id):
 		game.activePlayer = game.creator if random.random() < 0.5 else request.user
 		g = Assimilation(game.id, game.size, [request.user.id,game.creator.id])
 		game.state = g.export()
+		game.updated = datetime.now()
 		game.save()
 		player = GameUser()
 		player.game = game
@@ -312,6 +317,41 @@ def deletegame(request, game_id):
 			return HttpResponse('{"success":false, "error":"Can only delete games that haven\'t started yet"}', mimetype="application/json")
 
 		game.delete()
+
+		return HttpResponse('{"success":true}', mimetype="application/json")
+	raise Http404
+
+
+def placetile(request, game_id):
+	if request.is_ajax():
+		try:
+			game = Game.objects.get(pk=game_id)
+		except:
+			return HttpResponse('{"success":false, "error":"Game does not exist"}', mimetype="application/json")
+
+		if game.activePlayer.id != request.user.id:
+			return HttpResponse('{"success":false, "error":"Not your turn"}', mimetype="application/json")
+
+		post = request.POST
+		x = request.POST.get('x', None)
+		y = request.POST.get('y', None)
+		if x is None or y is None:
+			return HttpResponse('{"success":false, "error":"Need to submit a tile"}', mimetype="application/json")
+
+		model = Assimilation(JSON=game.state)
+		if not model.placeTile(Tile(x,y), request.user.id):
+			return HttpResponse('{"success":false, "error":"Invalid move submission"}', mimetype="application/json")
+
+		game.state = model.export()
+		for player in model.players:
+			print player.id, player.score
+			p = game.gameuser_set.get(user=player.id)
+			print p.user, p.score
+			p.score = player.score
+			p.save()
+		game.activePlayer = game.gameuser_set.exclude(user=game.activePlayer)[0].user
+		game.updated = datetime.now()
+		game.save()
 
 		return HttpResponse('{"success":true}', mimetype="application/json")
 	raise Http404

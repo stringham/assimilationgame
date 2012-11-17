@@ -1,7 +1,7 @@
 goog.provide('assimilation.Client');
 goog.require('assimilation.CreateGameDialog');
 goog.require('assimilation.Board');
-
+goog.require('assimilation.Play');
 /**
  * @constructor
  */
