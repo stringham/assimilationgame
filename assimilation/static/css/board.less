@@ -1,4 +1,5 @@
 @import "_elements";
+@import "_utils";
 .content{
 	.game-board{
 		position:absolute;
@@ -17,6 +18,30 @@
 			display:table-cell;
 			.inner-shadow(0,0,2px,1);
 			.rounded(6px);
+		}
+		.active{
+			cursor:pointer;
+		}
+		.gray{
+			.gradientFrom(@gray);
+		}
+		.blue{
+			.gradientFrom(@blue);
+		}
+		.green{
+			.gradientFrom(@green);
+		}
+		.yellow{
+			.gradientFrom(@yellow);
+		}
+		.orange{
+			.gradientFrom(@orange);
+		}
+		.red{
+			.gradientFrom(@red);
+		}
+		.teal{
+			.gradientFrom(@teal);
 		}
 	}
 	.numbers{
