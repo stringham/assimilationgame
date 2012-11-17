@@ -127,16 +127,22 @@ assimilation.Play.prototype.updatePieces = function() {
 			var hand = player['h'];
 			a.util.map(hand, function(tile){
 				var color = me.players[player['i']].color;
-				me.piecesContainer.append($('<div>').addClass('piece').addClass(color).text(getTileName(tile)).mouseover(function(){
+				var piece = $('<div>').addClass('piece').addClass(color).text(getTileName(tile)).mouseover(function(){
 					me.board.highlight(tile, color);
 				}).mouseleave(function(){
 					me.board.unhighlight(tile, color);
 				}).click(function(){
 					me.placeTile(tile);
-				}));
-				me.board.makeActive(tile,color, function(tile){
-					me.placeTile(tile);
 				});
+				if(player['i'] != me.game['currentPlayer']){
+					piece.addClass('not-turn')
+				}
+				else{
+					me.board.makeActive(tile,color, function(tile){
+						me.placeTile(tile);
+					});
+				}
+				me.piecesContainer.append(piece);
 			});
 		}
 	}
