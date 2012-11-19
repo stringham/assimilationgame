@@ -3,6 +3,8 @@
 {% block head%}
 <link rel="stylesheet" href="/assimilation/static/css/play.css" />
 <link rel="stylesheet" href="/assimilation/static/css/board.css" />
+
+{% if not compiled %}
 <script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
 <script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
 <script>
@@ -14,6 +16,18 @@
         play = new assimilation.Play({{game.id}});
     });
 </script>
+
+{% else %}
+
+<script type="text/javascript" src="/assimilation/static/js/bin/gameclient.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        play = new assimilation.GameClient({{game.id}});
+    });
+</script>
+
+{% endif %}
+
 {% endblock %}
 
 

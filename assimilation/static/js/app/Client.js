@@ -6,7 +6,6 @@ goog.require('assimilation.Play');
  * @constructor
  */
 assimilation.Client = function() {
-	
 };
 
 goog.exportSymbol('assimilation.Client', assimilation.Client);

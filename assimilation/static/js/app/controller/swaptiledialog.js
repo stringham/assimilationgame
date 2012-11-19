@@ -1,6 +1,11 @@
 goog.provide('assimilation.SwapTileDialog');
+goog.require('goog.json');
 goog.require('a.util');
 
+
+/**
+* @constructor
+*/
 assimilation.SwapTileDialog = function(){
 	var me = this;
 	this.id = null;
@@ -26,7 +31,7 @@ assimilation.SwapTileDialog.prototype.exchange = function(){
 	var tilesToSwap = [];
 	a.util.map(checked, function(tile){tilesToSwap.push(me.tiles[tile.value]);})
 	var data = {
-		'swap':JSON.stringify(tilesToSwap)
+		'swap':goog.json.serialize(tilesToSwap)
 	};
 
 	$.ajax('/assimilation/game/swap/' + this.id, {
@@ -41,7 +46,7 @@ assimilation.SwapTileDialog.prototype.exchange = function(){
 			}
 		},
 		'error':function(res){
-			console.log('error',res);
+			// console.log('error',res);
 		}
 	});
 }
@@ -60,8 +65,8 @@ assimilation.SwapTileDialog.prototype.show = function(id, tiles, color) {
 			'value': i
 		});
 		var label = $('<label>').attr({
-			'for':'tile-' + (i),
-		}).addClass('color-choice').addClass(color).text(String.fromCharCode(65 + tile.x) + (tile.y+1));
+			'for':'tile-' + (i)
+		}).addClass('color-choice').addClass(color).text(String.fromCharCode(65 + tile['x']) + (tile['y']+1));
 		me.tileSelection.append(input).append(label);
 	});
 	this.container.show('fast');

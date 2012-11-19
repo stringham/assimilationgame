@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url':'assimilation/static/images/favicon.ico'}),
+    url(r'^$', 'django.views.generic.simple.redirect_to', {'url':'assimilation/home'}),
 )
 
 

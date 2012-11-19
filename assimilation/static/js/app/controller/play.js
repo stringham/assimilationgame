@@ -107,7 +107,7 @@ assimilation.Play.prototype.updateHistory = function() {
 	a.util.map(history, function(claim, i){
 		if(!me.history[i+1]){
 			var number = $('<div>').addClass('number').text(i+1);
-			var move = $('<div>').addClass('move').addClass(me.players[claim.o].color).text(getTileName(claim.t)).click(function(){
+			var move = $('<div>').addClass('move').addClass(me.players[claim['o']]['color']).text(getTileName(claim['t'])).click(function(){
 				me.showHistoricState(i+1);
 			});
 			me.historyContainer.append(number).append(move);
@@ -118,20 +118,20 @@ assimilation.Play.prototype.updateHistory = function() {
 };
 
 assimilation.Play.prototype.updateBoard = function() {
-	this.board.showState(this.game.state, this.players, this.game.size);
+	this.board.showState(this.game['state'], this.players, this.game['size']);
 };
 
 assimilation.Play.prototype.showHistoricState = function(moves) {
-	var game = new assimilation.Game(this.game.state);
+	var game = new assimilation.Game(this.game['state']);
 	var claims = game.getClaims(moves);
-	this.board.showState({'c':claims}, this.players, this.game.size);
+	this.board.showState({'c':claims}, this.players, this.game['size']);
 	this.showingHistoric = true;
 };
 
 assimilation.Play.prototype.updatePieces = function() {
 	var me = this;
 	this.piecesContainer.empty();
-	var players = this['game']['state']['p'];
+	var players = this.game['state']['p'];
 	for(var i=0; i<players.length; i++){
 		if(typeof(players[i]['h']) != "number"){
 			var player = players[i];
@@ -163,8 +163,8 @@ assimilation.Play.prototype.updatePieces = function() {
 
 assimilation.Play.prototype.placeTile = function(tile) {
 	var data = {
-		'x':tile.x,
-		'y':tile.y
+		'x':tile['x'],
+		'y':tile['y']
 	};
 	var me = this;
 	$.ajax('/assimilation/game/placetile/' + this.gameid, {
@@ -185,5 +185,5 @@ assimilation.Play.prototype.placeTile = function(tile) {
 };
 
 assimilation.Play.prototype.showSwapTiles = function() {
-	this.swapTiles.show(this.gameid, this.playerTiles,this.color);
+	this.swapTiles.show(this.gameid, this.playerTiles, this.color);
 };

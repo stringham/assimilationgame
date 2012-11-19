@@ -32,7 +32,7 @@ def play(request, id):
 	except Game.DoesNotExist:
 		return HttpResponseRedirect(reverse('assimilation.views.games'))
 
-	return render_to_response('game/play.html',{'user':request.user, 'game':game, 'size': range(1,game.size+1)}, context_instance=RequestContext(request))
+	return render_to_response('game/play.html',{'user':request.user, 'game':game, 'size': range(1,game.size+1), 'compiled': False}, context_instance=RequestContext(request))
 
 @login_required
 def delete(request, id):

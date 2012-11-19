@@ -88,8 +88,8 @@ compilejs = $(CLOSUREBUILDER)                                                   
 #######################################
 
 .PHONY: js clean-js
-js: app
-clean-js: clean-app
+js: app gameclient
+clean-js: clean-app clean-gameclient
 
 
 .PHONY: deps clean-deps
@@ -98,7 +98,8 @@ clean-deps:
 	rm -f assimilation/static/js/bin/deps.js
 
 assimilation/static/js/bin/deps.js: $(COMPILED_JS_SOURCES)
-	$(CALCDEPS)                                       \
+	$(CALCDEPS)                                                           \
+	-i assimilation/static/js/app/GameClient.js                           \
 	-i assimilation/static/js/app/Client.js                               \
 	-p assimilation/static/js/app                                         \
 	-p assimilation/static/js/util                                        \
@@ -107,14 +108,24 @@ assimilation/static/js/bin/deps.js: $(COMPILED_JS_SOURCES)
 	--output_file=$@
 
 .PHONY: app clean-app
-js: assimilation/static/js/bin/app.js
+app: assimilation/static/js/bin/app.js
 clean-app:
 	rm -f assimilation/static/js/bin/app.js                               \
 	      assimilation/static/js/bin/app-source-map                       \
 	      assimilation/static/js/bin/app-var-map
-
 assimilation/static/js/bin/app.js: assimilation/static/js/bin/deps.js
 	$(call compilejs,app,assimilation/static/js/app/Client.js,$@)
+
+
+.PHONY: gameclient clean-gameclient
+gameclient: assimilation/static/js/bin/gameclient.js
+clean-gameclient:
+	rm -f assimilation/static/js/bin/gameclient.js
+		  assimilation/static/js/bin/gameclient-source-map
+		  assimilation/static/js/bin/gameclient-var-map
+assimilation/static/js/bin/gameclient.js: assimilation/static/js/bin/deps.js
+	$(call compilejs,gameclient,assimilation/static/js/app/GameClient.js,$@)
+
 
 
 #######################################

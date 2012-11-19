@@ -69,20 +69,20 @@ assimilation.Board.prototype.showState = function(state, players, size) {
 
 assimilation.Board.prototype.makeActive = function(tile, color, onclick){
 	var me = this;
-	this.board[tile.x][tile.y].mouseover(function(dom){
-		me.board[tile.x][tile.y].addClass(color).addClass('active');
+	this.board[tile['x']][tile['y']].mouseover(function(dom){
+		me.board[tile['x']][tile['y']].addClass(color).addClass('active');
 	}).mouseout(function(dom){
-		me.board[tile.x][tile.y].removeClass(color).removeClass('active');
+		me.board[tile['x']][tile['y']].removeClass(color).removeClass('active');
 	}).click(function(){
 		onclick(tile);
 	});
 }
 
 assimilation.Board.prototype.highlight = function(tile, color) {
-	this.board[tile.x][tile.y].addClass(color);
+	this.board[tile['x']][tile['y']].addClass(color);
 };
 
 assimilation.Board.prototype.unhighlight = function(tile, color) {
-	this.board[tile.x][tile.y].removeClass(color);
+	this.board[tile['x']][tile['y']].removeClass(color);
 	// body...
 };

@@ -45,16 +45,16 @@ assimilation.Chats.prototype.update = function() {
 				return;
 			}
 			me.last_message = data['latest'];
-			for(var i=0; i<data.messages.length; i++){
+			for(var i=0; i<data['messages'].length; i++){
 				var user = data['users'][data['messages'][i]['userid']];
 				if(user)
-					var color = user.color;
+					var color = user['color'];
 				else
 					var color = 'black';
 
-				me.appendMessage(data.messages[i].name, data.messages[i].text, color);
+				me.appendMessage(data['messages'][i].name, data['messages'][i].text, color);
 			}
-			if(data.messages.length > 0)
+			if(data['messages'].length > 0)
 				me.container.animate({scrollTop:me.container.get(0).scrollHeight}, 'fast');
 			setTimeout(function() {
 				me.update();
