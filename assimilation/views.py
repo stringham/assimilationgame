@@ -347,7 +347,7 @@ def placetile(request, game_id):
 		game.activePlayer = game.gameuser_set.exclude(user=game.activePlayer)[0].user
 		game.updated = datetime.now()
 		if model.status == 'complete':
-			game.state = 'complete'
+			game.status = 'complete'
 			for player in model.players:
 				if player.score > 0:
 					p = game.gameuser_set.get(user = player.id)
