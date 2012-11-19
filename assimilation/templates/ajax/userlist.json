@@ -9,7 +9,8 @@
 					"name":"{{user.user.first_name}}",
 					"id":"{{user.user.id}}",
 					"color":"{{user.color}}",
-					"score":"{{user.score}}"
+					"score":"{{user.score}}",
+					"won":{% if user.won %} true {% else %} false {%endif%}
 				}{% if not forloop.last %},{% endif %}
 			{% endfor %}
 			],

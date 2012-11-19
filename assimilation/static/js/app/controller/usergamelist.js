@@ -79,7 +79,7 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 		});
 
 	}
-	else {//if(game['status'] == 'init'){
+	else if(game['status'] == 'init'){
 		var message = $('<div>').addClass('message').text('Waiting for opponent to join.');
 		var deleteButton = $('<div>').addClass('delete').text('Delete Game');
 		deleteButton.click(function(e){
@@ -97,6 +97,39 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 			})
 		});
 		newGameContainer.append(message).append(deleteButton);
+	} else if(game['status'] == 'complete'){
+		var left = $('<div>').addClass('game-item-left');
+		var players = $('<div>').addClass('players').append($('<div>').addClass('players-title').text('Players'));	
+		var list = $('<ul>');
+		for(var i=0; i<game.users.length; i++){
+			var user = game.users[i];
+			var li = $('<li>').addClass(user['color']);
+			if(user['won'])
+				li.addClass('active');
+			li.text(user['name']);
+			list.append(li);
+			users[user['id']] = user;
+		}
+		players.append($('<div>').addClass('player-list').append(list));
+
+		players.append($('<div>').addClass('last-move').text('Last Move:').append($('<span>').text(game['updated'].substr(0,7))))
+
+		left.append(players);
+
+		var right = $("<div>").addClass('game-item-right');
+		var status = $('<div>').addClass('status');
+		var button = $('<div>').addClass('action-button');
+		status.addClass('green');
+		status.text('Complete');
+		button.text('View')
+		right.append(status).append(button);
+		newGameContainer.append(left);
+		newGameContainer.append(right);
+
+		button.click(function(e){
+			e.stopPropagation();
+			window.location.pathname='/assimilation/play/' + game.id;
+		});		
 	}
 	
 	this.games[game['id']] = {

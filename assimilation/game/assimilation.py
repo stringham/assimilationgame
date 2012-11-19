@@ -12,7 +12,7 @@ class Assimilation:
 		self.board = []
 		self.history = []
 		self.playersById = {}
-		
+		self.status = 'playing'		
 		#initialization of a new game		
 		if id is not None and size is not None and players is not None:
 			self.id = id
@@ -43,6 +43,7 @@ class Assimilation:
 		result['p'] = []
 		result['pi'] = []
 		result['b'] = self.board
+		result['s'] = self.status
 
 		for claim in self.claims:
 			result['c'].append(claim.serialize())
@@ -60,7 +61,10 @@ class Assimilation:
 		self.width = g['w']
 		self.height = g['he']
 		self.board = g['b']
-
+		if g.has_key('s'):
+			self.status = g['s']
+		else:
+			self.status = 'playing'
 		for claim in g['c']:
 			self.claims.append(Claim(JSON=claim))
 		for player in g['p']:
@@ -136,6 +140,9 @@ class Assimilation:
 			player.score = 0
 		for claim in self.claims:
 			self.playersById[claim.owner].score+=1
+		for player in self.players:
+			if player.score == self.width * self.height:
+				self.status = 'complete'
 
 	def setOwner(self, tile, owner):
 		self.board[tile.x][tile.y] = owner

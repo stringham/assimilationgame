@@ -346,6 +346,13 @@ def placetile(request, game_id):
 			p.save()
 		game.activePlayer = game.gameuser_set.exclude(user=game.activePlayer)[0].user
 		game.updated = datetime.now()
+		if model.status == 'complete':
+			game.state = 'complete'
+			for player in model.players:
+				if player.score > 0:
+					p = game.gameuser_set.get(user = player.id)
+					p.won = True
+					p.save()
 		game.save()
 
 		return HttpResponse('{"success":true}', mimetype="application/json")
