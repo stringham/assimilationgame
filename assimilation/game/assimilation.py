@@ -84,6 +84,18 @@ class Assimilation:
 		self.pile = self.pile[:select] + self.pile[select+1:]
 		self.playersById[playerid].hand.append(tile)
 
+	def swapTiles(self, tiles, player):
+		for tile in tiles:
+			if tile not in self.playersById[player].hand:
+				return False
+		for tile in tiles:
+			self.playersById[player].hand.remove(tile)
+			self.pile.append(tile)
+		for tile in tiles:
+			self.giveTile(player)
+		self.history.append(Claim(Tile(-1,-1), player))
+		return True
+
 	def placeTile(self, tile, player):
 		if tile in self.playersById[player].hand:
 			self.playersById[player].hand.remove(tile)

@@ -60,6 +60,8 @@ assimilation.Game.prototype.getClaims = function(moves) {
 	}
 
 	function placeTile(tile, player){
+		if(tile.x == -1 || tile.y == -1)
+			return;
 		setOwner(tile,player);
 		var neighbors = [];
 		getNeighbors(tile, neighbors);

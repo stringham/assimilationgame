@@ -20,6 +20,7 @@ urlpatterns = patterns('assimilation.views',
     url(r'^game/delete/(?P<game_id>[^/]+)$','deletegame'),
     url(r'^game/get/(?P<game_id>[^/]+)$','getgame'),
     url(r'^game/placetile/(?P<game_id>[^/]+)$','placetile'),
+    url(r'^game/swap/(?P<game_id>[^/]+)$','swap'),
 
 )
 

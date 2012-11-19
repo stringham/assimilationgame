@@ -167,3 +167,27 @@
     </div>
 </div>
 {% endblock %}
+
+{% block extra %}
+<div class="swap-tiles">
+    <div class="cancel"></div>
+    <div class="pick">Select the tiles you would like to exchange:</div>
+    <div class="swap-tile-pick">
+        <form>
+            <input type="checkbox" name="tile" id="tile-1" value="1">
+            <label for="tile-1" class="color-choice">E6</label>
+            <input type="checkbox" name="tile" id="tile-2" value="2">
+            <label for="tile-2" class="color-choice">E8</label>
+            <input type="checkbox" name="tile" id="tile-3" value="3">
+            <label for="tile-3" class="color-choice">G2</label>
+            <input type="checkbox" name="tile" id="tile-4" value="4">
+            <label for="tile-4" class="color-choice">G8</label>
+            <input type="checkbox" name="tile" id="tile-5" value="5">
+            <label for="tile-5" class="color-choice">B4</label>
+            <input type="checkbox" name="tile" id="tile-6" value="6">
+            <label for="tile-6" class="color-choice">H1</label>
+        </form>
+    </div>
+    <div class="swap-button">Exchange</div>
+</div>
+{% endblock %}

@@ -197,7 +197,6 @@ def chats(request, game_id):
 
 	if request.method == "POST":
 		content = request.POST.get('content','')
-		# print request.POST
 		if(len(content) == 0):
 			return HttpResponseBadRequest('Need to POST content to create a message')
 		new_message = Message()
@@ -211,7 +210,6 @@ def chats(request, game_id):
 def getgame(request, game_id):
 	if request.method == 'GET':
 		updated = datetime.fromtimestamp(float(request.GET.get('updated',0)))
-		print updated
 		try:
 			game = Game.objects.get(pk=game_id, updated__gt=updated)
 			game.users = game.gameuser_set.all()
@@ -271,7 +269,6 @@ def joingame(request, game_id):
 		post = request.POST
 		color = post.get('color','')
 		password = post.get('password','')
-		print password
 		try:
 			game = Game.objects.get(pk=game_id)
 		except Game.DoesNotExist:
@@ -344,11 +341,37 @@ def placetile(request, game_id):
 
 		game.state = model.export()
 		for player in model.players:
-			print player.id, player.score
 			p = game.gameuser_set.get(user=player.id)
-			print p.user, p.score
 			p.score = player.score
 			p.save()
+		game.activePlayer = game.gameuser_set.exclude(user=game.activePlayer)[0].user
+		game.updated = datetime.now()
+		game.save()
+
+		return HttpResponse('{"success":true}', mimetype="application/json")
+	raise Http404
+
+def swap(request, game_id):
+	if request.is_ajax():
+		try:
+			game = Game.objects.get(pk=game_id)
+		except:
+			return HttpResponse('{"success":false, "error":"Game does not exist"}', mimetype="application/json")
+
+		if game.activePlayer.id != request.user.id:
+			return HttpResponse('{"success":false, "error":"Not your turn"}', mimetype="application/json")
+
+		post = request.POST
+		tiles = post.get('swap','[]')
+		tiles = json.loads(tiles)
+		swap = []
+		for tile in tiles:
+			swap.append(Tile(tile['x'],tile['y']))
+		model = Assimilation(JSON=game.state)
+		if not model.swapTiles(swap, request.user.id):
+			return HttpResponse('{"success":false, "error":"Invalid tile submission"}', mimetype="application/json")
+
+		game.state = model.export()
 		game.activePlayer = game.gameuser_set.exclude(user=game.activePlayer)[0].user
 		game.updated = datetime.now()
 		game.save()

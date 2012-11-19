@@ -2,6 +2,7 @@ goog.provide('assimilation.Play');
 goog.require('assimilation.Chats');
 goog.require('assimilation.Board');
 goog.require('assimilation.Game');
+goog.require('assimilation.SwapTileDialog')
 goog.require('a.util');
 
 /**
@@ -11,12 +12,15 @@ assimilation.Play = function(gameid){
 	var me = this;
 	this.board = new assimilation.Board();
 	this.chats = new assimilation.Chats(gameid);
+	this.swapTiles = new assimilation.SwapTileDialog();
 	this.gameid = gameid;
 	this.showingHistoric = false;
 	this.playersContainer = $('.player-content');
 	this.playersContainer.empty();
 	this.players = {};
+	this.playerTiles = [];
 	this.history = [];
+	this.color = "blue";
 	this.historyContainer = $('.history-list');
 	this.historyContainer.empty().mouseleave(function(){
 		if(me.showingHistoric){
@@ -30,6 +34,11 @@ assimilation.Play = function(gameid){
 	this.piecesContainer.empty();
 
 	this.modified = 0;
+
+	this.exchangeButton = $('.more');
+	this.exchangeButton.click(function(){
+		me.showSwapTiles();
+	});
 
 	this.update();
 }
@@ -86,6 +95,8 @@ assimilation.Play.prototype.updatePlayers = function() {
 };
 
 function getTileName(tile){
+	if(tile.x == -1 || tile.y == -1)
+		return 'Skipped Turn';
 	return String.fromCharCode(65 + tile.x) + (tile.y+1);
 }
 
@@ -125,8 +136,10 @@ assimilation.Play.prototype.updatePieces = function() {
 		if(typeof(players[i]['h']) != "number"){
 			var player = players[i];
 			var hand = player['h'];
+			this.playerTiles = hand;
 			a.util.map(hand, function(tile){
 				var color = me.players[player['i']].color;
+				me.color = color;
 				var piece = $('<div>').addClass('piece').addClass(color).text(getTileName(tile)).mouseover(function(){
 					me.board.highlight(tile, color);
 				}).mouseleave(function(){
@@ -169,4 +182,8 @@ assimilation.Play.prototype.placeTile = function(tile) {
 
 		}
 	})
+};
+
+assimilation.Play.prototype.showSwapTiles = function() {
+	this.swapTiles.show(this.gameid, this.playerTiles,this.color);
 };
