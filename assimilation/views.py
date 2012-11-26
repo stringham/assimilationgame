@@ -63,11 +63,10 @@ def games(request):
 @login_required
 def play(request, id):
 	try:
-		game = Game.objects.get(pk=id)
+		game = Game.objects.filter(gameuser__user = request.user.id).get(pk=id)
 	except Game.DoesNotExist:
-		return HttpResponseRedirect(reverse('assimilation.views.games'))
-	user = getUserStats(request.user)
-	return render_to_response('game/play.html',{'user':user,'game':game, 'size': range(1,game.size+1), 'compiled': False}, context_instance=RequestContext(request))
+		return HttpResponseRedirect(reverse('assimilation.views.games'))	
+	return render_to_response('game/play.html',{'game':game, 'size': range(1,game.size+1), 'compiled': False}, context_instance=RequestContext(request))
 
 @login_required
 def delete(request, id):
