@@ -2,19 +2,27 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
+    <script type="text/javascript" src="/assimilation/static/js/moment.min.js"></script>
     <script type="text/javascript" src="/assimilation/static/js/jquery-1.8.0.min.js"></script>
     <link rel="stylesheet" href="/assimilation/static/css/base.css" />
     <title>{% block title %}Assimilation{% endblock %}</title>
+
+    {% if not compiled %}
+    <script type="text/javascript" src="/assimilation/static/js/closure/closure/goog/base.js"></script>
+    <script type="text/javascript" src="/assimilation/static/js/bin/deps.js"></script>
     <script>
-      function toggleAccount(close){
-        if(close)
-          $('.account').hide('slow');
-        else
-          $('.account').stop().toggle('slow');
-      }
-      function logout(){
-        window.location.pathname="/assimilation/auth/logout/";
-      }
+        goog.require("assimilation.AccountDialog");
+    </script>
+    {% else %}
+    <script type="text/javascript" src="/assimilation/static/js/bin/account.js"></script>
+    {% endif %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+             dialog = new assimilation.AccountDialog();
+        });
+    </script>
+
+    <script>
       function getCookie(name)
       {
         var cookieValue = null;
@@ -51,11 +59,11 @@
   <div class="menu">
     {% block menu %}
     <img src="/assimilation/static/images/assimilation.png">
-    <h1 class="menu-title"> Assimilation </h1>
+    <a href="/"><h1 class="menu-title"> Assimilation </h1></a>
     <ul>
       <li><a href="/assimilation/home/">Home</a></li>
       <li><a href="/assimilation/games">My Games</a></li>
-      <li><a onclick="toggleAccount()" class="account-open">My Account</a></li>
+      <li><a class="account-open">My Account</a></li>
     </ul>
     {% endblock %}
   </div>
@@ -65,7 +73,7 @@
       {% if not login%}
         <div class="account-name">
           {{user.first_name}}
-          <div onclick="toggleAccount(true)" class="account-close"></div>
+          <div class="account-close"></div>
         </div>
         <div class="account-stats">
           <table>
@@ -74,33 +82,62 @@
               </tr>
               <tr>
                   <td class="stat-name">Total Games Played:</td>
-                  <td class="stat-value stat-total">125</td>
+                  <td class="stat-value stat-total">{{user.completeGames}}</td>
               </tr>
               <tr>
                   <td class="stat-name">Wins:</td>
-                  <td class="stat-value stat-win">50</td>
+                  <td class="stat-value stat-win">{{user.totalWins}}</td>
               </tr>
               <tr>
                   <td class="stat-name">Losses:</td>
-                  <td class="stat-value stat-loss">75</td>
+                  <td class="stat-value stat-loss">{{user.totalLosses}}</td>
               </tr>
               <tr>
                   <td class="stat-name">Percent Wins:</td>
-                  <td class="stat-value stat-percent">40%</td>
+                  <td class="stat-value stat-percent">{{user.winPercent}}%</td>
               </tr>
               <tr>
                   <td class="stat-name">Rank:</td>
-                  <td class="stat-value stat-rank">5</td>
+                  <td class="stat-value stat-rank">{{user.rank}}</td>
               </tr>
           </table>
         </div>
         <div class="account-buttons">
           <button class="account-update">Update Account</button>
-          <button onclick="logout()" class="account-signout">Sign Out</button>
+          <button class="account-signout">Sign Out</button>
         </div>
       {% else %}
       {% endif %}
     {% endblock %}
+  </div>
+
+  <div class='update-account'>
+    <div class='title'>
+      Update your Account
+    </div>
+    <div class='input'>
+      <div class='name'>
+        <div class='label'>Name:</div> <input type='text'>
+      </div>
+      <div class='email'>
+        <div class='label'>Email:</div> <input type='email'>
+      </div>
+      <div class='password'>
+        <div class='label'>Password:</div> <input type='password'>
+      </div>
+      <div class='new-password'>
+        <div class='label'>New Password:</div> <input type='password'>
+      </div>
+      <div class='repeat-password'>
+        <div class='label'>New Password Again:</div> <input type='password'>
+      </div>
+      <div class='cancel'>
+        Cancel
+      </div>
+      <div class='save'>
+        Save
+      </div>
+    </div>
   </div>
 
   <div class="game-frame">

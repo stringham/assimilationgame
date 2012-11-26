@@ -35,6 +35,7 @@ body {
 	left:0;
 	right:0;
 	min-width:920px;
+	.drop-shadow(0px,5px,6px,.5);
 	img {
 		margin: 5px;
 		height: @menuHeight - 10;
@@ -174,6 +175,75 @@ body {
 	}
 }
 
+.update-account{
+	z-index:1;
+	display:none;
+	width:500px;
+	height:400px;
+	position:fixed;
+	left:50%;
+	margin-left:-200px;
+	top:150px;
+	.rounded(15px);
+	.bw-gradient(#F2F2F2, 210, 255);
+	.drop-shadow(0,4px,10px,.8);
+	.title{
+		text-align:center;
+		font-size:30px;
+		margin-top:10px;
+	}
+	.input{
+		.name, .email, .password, .new-password, .repeat-password{
+			height:45px;
+			margin-top:10px;
+			line-height:45px;
+			font-size:25px;
+			.label{
+				text-align:right;
+				width:250px;
+				float:left;
+			}
+			input {
+				border:1px solid lightgray;
+				padding-left:5px;
+				background:#ccc;
+				.rounded(10px);
+				height:30px;
+				font-size:20px;
+				width:200px;
+				margin: 5px 20px 5px 5px;
+				float:right;
+				&:focus{
+					outline:none;
+					border:3px solid gray;
+					height:24px;
+					width:194px;
+				}
+			}
+		}
+		.cancel{
+			.button(@red-button);
+			line-height:40px;
+			float:left;
+			margin-left:75px;
+			margin-top:15px;
+			height:40px;
+			width:150px;
+			font-size:30px;
+		}
+		.save{
+			.button(@blue-button);
+			line-height:40px;
+			float:left;
+			margin-left:75px;
+			margin-top:15px;
+			height:40px;
+			width:150px;
+			font-size:30px;
+		}
+	}
+}
+
 .game-frame {
 	margin-top: @menuHeight + 30;
 	margin-left:auto;
@@ -182,6 +252,7 @@ body {
 	height: @game-frame-height;
 	position:relative;
 	.content {
+		.drop-shadow(5px,5px,6px,.5);
 		position: absolute;
 		top:0;
 		left:0;
@@ -192,6 +263,7 @@ body {
 	}
 
 	.options {
+		.drop-shadow(5px,5px,6px,.5);
 		position:absolute;
 		top:0;
 		right:0;

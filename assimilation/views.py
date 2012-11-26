@@ -62,38 +62,76 @@ def login(request):
 		django.contrib.auth.login(request,user)
 		return HttpResponseRedirect(request.session['next'])
 
-def logout(request):
-	django.contrib.auth.logout(request)
-	return HttpResponseRedirect(reverse('assimilation.views.index'))
-
 def create(request):
 	if request.method == 'GET':
 		form = UserForm()
-		return render_to_response('auth/create.html', {'form':form}, context_instance=RequestContext(request))
+		signin = LoginForm()
+		return render_to_response('auth/login.html', {'form':signin, 'create':form}, context_instance=RequestContext(request))
 
 	if request.method == 'POST':
 		form = UserForm(request.POST)
+		signin = LoginForm()
 		if not form.is_valid():
-			return render_to_response('auth/create.html', {'form':form}, context_instance=RequestContext(request))
+			return render_to_response('auth/login.html', {'form':signin, 'create':form}, context_instance=RequestContext(request))
 
 		try:
 			u = User.objects.get(username=form.cleaned_data['username'])
-			return render_to_response('auth/create.html', {'form':form, 'error':'Username already taken'}, context_instance=RequestContext(request))
+			return render_to_response('auth/login.html', {'form':signin, 'create':form, 'create_error':'Username already taken'}, context_instance=RequestContext(request))
 		except User.DoesNotExist:
 			pass
 		try:
 			e = User.objects.get(email=form.cleaned_data['email'])
-			return render_to_response('auth/create.html', {'form':form, 'error':'Email already in use.'}, context_instance=RequestContext(request))
+			return render_to_response('auth/login.html', {'form':signin, 'create':form, 'create_error':'Email already in use.'}, context_instance=RequestContext(request))
 		except User.DoesNotExist:
 			pass
 
 		if request.POST['password'] != request.POST['confirm']:
-			return render_to_response('auth/create.html', {'form':form, 'error':'Passwords do not match.'}, context_instance=RequestContext(request))
+			return render_to_response('auth/login.html', {'form':signin, 'create':form, 'create_error':'Passwords do not match.'}, context_instance=RequestContext(request))
 
 		user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
 		user.first_name = form.cleaned_data['name']
 		user.save()
+		newUser = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+		django.contrib.auth.login(request,newUser)
 		return HttpResponseRedirect(reverse('assimilation.views.index'))
+
+def logout(request):
+	django.contrib.auth.logout(request)
+	return HttpResponseRedirect(reverse('assimilation.views.index'))
+
+@login_required
+def update(request):
+	if request.method == 'POST':
+		post = request.POST
+		name = post.get('name',False)
+		email = post.get('email',False)
+		password = post.get('password',False)
+		newpassword = post.get('new-password',False)
+		newpassagain = post.get('new-pass-again',False)
+		user = authenticate(username=request.user.username, password=password)
+		if user is None:
+			return HttpResponse('{"success":false, "error":"Invalid Password"}', mimetype="application/json")
+
+		if name:
+			user.first_name = name
+		if email:
+			try:
+				e = User.objects.get(email=email)
+				if e.id != user.id:
+					return HttpResponse('{"success":false, "error":"Email already in use"}', mimetype="application/json")
+			except User.DoesNotExist:
+				pass
+			user.email = email
+		if newpassword or newpassagain:
+			if newpassagain != newpassword:
+				return HttpResponse('{"success":false, "error":"New Passwords do not match"}', mimetype="application/json")
+			user.set_password(newpassword)
+		user.save()
+		return HttpResponse('{"success":true}', mimetype="application/json")
+
+	return HttpResponse('{"success":false,"error":"Must POST to update account"}', mimetype="application/json")
+
+
 
 def makeadmin(request):
 	# try:
