@@ -100,6 +100,25 @@ class Assimilation:
 		self.history.append(Claim(Tile(-1,-1), player))
 		return True
 
+	def resign(self, playerid):
+		for player in self.players:
+			if player.id != playerid:
+				winner = player
+		print winner
+		for claim in self.claims:
+			claim.owner = winner.id
+		for tile in self.pile:
+			self.claims.append(Claim(tile, winner.id))
+		self.pile = []
+		for player in self.players:
+			for tile in player.hand:
+				self.claims.append(Claim(tile, winner.id))
+			player.hand = []
+		self.calculateScores()
+		for claim in self.claims:
+			self.board[claim.tile.x][claim.tile.y] = claim.owner
+		self.history.append(Claim(Tile(-2,-2), winner.id))
+
 	def placeTile(self, tile, player):
 		if tile in self.playersById[player].hand:
 			self.playersById[player].hand.remove(tile)

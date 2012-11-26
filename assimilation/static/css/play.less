@@ -210,6 +210,15 @@
 			right:30px;
 			.button(@blue-button);
 		}
+		.resign{
+			font-size:10px;
+			width:55px;
+			height:15px;
+			position:absolute;
+			top:10px;
+			left:30px;
+			.button(@red-button);
+		}
 		.pieces{
 			@size: 45px;
 			margin: 5px auto;
@@ -258,13 +267,13 @@
 
 .swap-tiles {
 	display:none;
-	position:fixed;
+	position:absolute;
 	background:white;
 	width:400px;
 	height:180px;
 	top:250px;
-	left:50%;
-	margin-left:-200px;
+	left:55%;
+	// margin-left:-200px;
 	.rounded(15px);
 	.bw-gradient(@color: #F5F5F5, @start: 200, @stop: 240);
 	.drop-shadow(1px,1px,6px,1);

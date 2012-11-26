@@ -396,6 +396,36 @@ def placetile(request, game_id):
 		return HttpResponse('{"success":true}', mimetype="application/json")
 	raise Http404
 
+def resign(request, game_id):
+	if request.is_ajax():
+		try:
+			game = Game.objects.get(pk=game_id)
+		except:
+			return HttpResponse('{"success":false, "error":"Game does not exist"}', mimetype="application/json")
+
+		if game.activePlayer.id != request.user.id:
+			return HttpResponse('{"success":false, "error":"Not your turn"}', mimetype="application/json")
+
+		model = Assimilation(JSON = game.state)
+		model.resign(request.user.id)
+		game.state = model.export()
+		for player in model.players:
+			p = game.gameuser_set.get(user=player.id)
+			p.score = player.score
+			p.save()
+
+		if model.status == 'complete':
+			game.status = 'complete'
+			for player in model.players:
+				if player.score > 0:
+					p = game.gameuser_set.get(user = player.id)
+					p.won = True
+					p.save()
+		game.updated = datetime.now()
+		game.save()
+		return HttpResponse('{"success":true}', mimetype="application/json")
+	raise Http404 
+
 def swap(request, game_id):
 	if request.is_ajax():
 		try:

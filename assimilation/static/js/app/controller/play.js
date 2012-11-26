@@ -39,6 +39,12 @@ assimilation.Play = function(gameid){
 	this.exchangeButton.click(function(){
 		me.showSwapTiles();
 	});
+	this.resignButton = $('.resign');
+	this.resignButton.click(function(){
+		if(confirm("Are you sure?")){
+			me.resign();
+		}
+	});
 
 	this.update();
 }
@@ -97,6 +103,8 @@ assimilation.Play.prototype.updatePlayers = function() {
 function getTileName(tile){
 	if(tile.x == -1 || tile.y == -1)
 		return 'Skipped Turn';
+	if(tile.x == -2 || tile.y == -2)
+		return 'Resigned';
 	return String.fromCharCode(65 + tile.x) + (tile.y+1);
 }
 
@@ -186,4 +194,17 @@ assimilation.Play.prototype.placeTile = function(tile) {
 
 assimilation.Play.prototype.showSwapTiles = function() {
 	this.swapTiles.show(this.gameid, this.playerTiles, this.color);
+};
+
+assimilation.Play.prototype.resign = function() {
+	$.ajax('/assimilation/game/resign/' + this.gameid, {
+		'type':'POST',
+		'dataType':'json',
+		'success':function(res){
+			if(res['error'])
+				alert(res['error']);
+		},
+		'error':function(res){
+		}
+	});
 };
