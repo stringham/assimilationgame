@@ -3,6 +3,23 @@ assimilation2
 
 Assimilation with Django
 
+Future Plans
+------------
+
+- Create boards with black (neutral) spaces
+
+- Implement AI, play against the computer
+
+- Allow more than two players per game (up to 6?)
+
+- Implement animation when a user takes a turn
+
+- Play back a game turn by turn, time lapse?
+
+- Allow AI's to play against each other
+
+- Automatically end game when nobody else can win
+
 Deploying to apfog
 ------------------
 `af login`
