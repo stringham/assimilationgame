@@ -1,18 +1,28 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/assimilation/static/css/signin.css">
+{%endblock%}
+
 {% block content %}
 
-{% if error %}<p><i>{{ error }}</i></p>{% endif %}
-
+<div class='signin'>Sign in</div>
+{% if error %}<p class='errorlist'><i>{{ error }}</i></p>{% endif %}
 <form action="/assimilation/auth/login/" method="post">
 {% csrf_token %}
 {{ form.as_p }}
-<input type="submit" value="Login" />
+<input type="submit" value="Sign in" />
 </form>
-
-<p><i>or</i></p>
-
-<p><a href="/assimilation/auth/create">Create an account</a></p>
-
-
 {% endblock %}
+
+{%block options%}
+<div class='create-account'>Create an account:</div>
+
+{% if create_error %}<p><i>{{ create_error }}</i></p>{% endif %}
+
+<form action="/assimilation/auth/create/" method="post">
+{% csrf_token %}
+{{ create.as_p }}
+<input type="submit" value="Create Account" />
+</form>
+{%endblock%}
