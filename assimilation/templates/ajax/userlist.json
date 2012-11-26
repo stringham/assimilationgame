@@ -19,7 +19,7 @@
 			{% autoescape off %}
 			"state":{{game.playerState}},
 			{% endautoescape %}
-			"updated":"{{game.updated}}",
+			"updated":"{{game.updated|date:"U.u"}}",
 			"id":"{{game.id}}",
 			"size":"{{game.size}}"
 		} {% if not forloop.last %},{% endif %}

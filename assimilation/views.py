@@ -9,6 +9,7 @@ from django.template import RequestContext
 from django.utils import simplejson
 from django.shortcuts import render_to_response
 from datetime import datetime
+from django.db.models import Count
 import time
 import uuid, hashlib
 import simplejson as json
@@ -17,13 +18,47 @@ from game.assimilation import Assimilation, Tile
 import HTMLParser
 from assimilation.models import *
 
+def getUserStats(user):
+	try:
+		games = Game.objects.filter(gameuser__user=user.id)
+		complete = games.filter(status='complete')
+	except Game.DoesNotExist:
+		pass
+	try:
+		wins = GameUser.objects.filter(user=user.id).filter(won=True)
+	except GameUser.DoesNotExist:
+		pass
+	user.totalGames = len(games)
+	user.completeGames = len(complete)
+	user.totalWins = len(wins)
+	user.totalLosses = user.completeGames - user.totalWins
+	if user.completeGames > 0:
+		user.winPercent = int((float(user.totalWins)/float(user.completeGames))*100)
+	else:
+		user.winPercent = 0
+	places = {}
+	try:
+		winCounts = GameUser.objects.filter(won=True).values('user').annotate(Count('user'))
+		counts = list(winCounts)
+		counts.sort(key=lambda winner: winner['user__count'], reverse=True)
+		places[0] = len(counts)+1
+		for i in range(len(counts)-1,-1,-1):
+			places[counts[i]['user__count']] = i+1
+		print places
+	except GameUser.DoesNotExist:
+		pass
+	user.rank = places[user.totalWins]
+	return user
+
 @login_required
 def index(request):
-	return render_to_response('game/index.html',{}, context_instance=RequestContext(request))
+	user = getUserStats(request.user)
+	return render_to_response('game/index.html',{'user': user}, context_instance=RequestContext(request))
 
 @login_required
 def games(request):
-	return render_to_response('game/games.html',{'user':request.user})
+	user = getUserStats(request.user)
+	return render_to_response('game/games.html',{'user':user}, context_instance=RequestContext(request))
 
 @login_required
 def play(request, id):
@@ -31,8 +66,8 @@ def play(request, id):
 		game = Game.objects.get(pk=id)
 	except Game.DoesNotExist:
 		return HttpResponseRedirect(reverse('assimilation.views.games'))
-
-	return render_to_response('game/play.html',{'user':request.user, 'game':game, 'size': range(1,game.size+1), 'compiled': False}, context_instance=RequestContext(request))
+	user = getUserStats(request.user)
+	return render_to_response('game/play.html',{'user':user,'game':game, 'size': range(1,game.size+1), 'compiled': False}, context_instance=RequestContext(request))
 
 @login_required
 def delete(request, id):
@@ -48,7 +83,8 @@ def login(request):
 	if request.method == 'GET':
 		form = LoginForm()
 		request.session['next'] = request.GET['next']
-		return render_to_response('auth/login.html', {'form':form, 'login':True}, context_instance=RequestContext(request))
+		create = UserForm()
+		return render_to_response('auth/login.html', {'form':form, 'create':create, 'login':True}, context_instance=RequestContext(request))
 
 	if request.method == 'POST':
 		form = LoginForm(request.POST)
@@ -187,20 +223,20 @@ def later(request, id):
 def usergames(request):
 	user_id = request.user.id
 	userTime = datetime.fromtimestamp(float(request.GET.get('time',0)))
-	games = [];
+	# games = [];
 	try:
-		gameUsers = GameUser.objects.filter(user = user_id)
-		for entry in gameUsers:
-			game = Game.objects.get(pk=entry.game.id)
+		# gameUsers = GameUser.objects.filter(user = user_id)
+		print 'trying to get games'
+		games = Game.objects.filter(gameuser__user=user_id).filter(updated__gt=userTime)
+		print len(games)		
+		for game in games:
 			game.users = game.gameuser_set.all()
 			game.playerState = {}
 			if game.status != 'init':
 				temp = Assimilation(JSON=game.state)
 				game.playerState = temp.getStateFor(user_id)
-			games.append(game)
 	except GameUser.DoesNotExist:
 		pass
-
 	return render_to_response('ajax/userlist.json', {'current_unix_timestamp': time.time(), 'games':games}, context_instance=RequestContext(request))
 
 def availablegames(request):
@@ -279,7 +315,7 @@ def creategame(request):
 		game.size = size
 		game.status = "init"
 		game.state = "{}"
-		game.updated = None
+		game.updated = datetime.now()
 		game.activePlayer = None
 		if len(password) > 0:
 			salt = uuid.uuid1().hex[:20]

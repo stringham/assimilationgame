@@ -49,9 +49,13 @@ assimilation.AvailableGames.prototype.update = function() {
 		'dataType':'json',
 		'success': function(response){
 			var games = response['games'];
+			me.container.empty();
 			for(var i=0; i<games.length; i++){
 				me.addGameToList(games[i]['player'],games[i]['color'],games[i]['size'],games[i]['created'].substr(0,8),games[i]['password'],games[i]['id'])
 			}
+			setTimeout(function() {
+				me.update();
+			}, 2000);
 		}
 	});
 };

@@ -18,22 +18,59 @@ assimilation.UserGameList = function(userid){
 
 assimilation.UserGameList.prototype.update = function() {
 	var me = this;
+	var data = {
+		'time':this.time
+	};
 	$.ajax('/assimilation/usergames/', {
 		'success': function(data){
 			me.time = data['time'];
 			var games = data['games'];
-			for(var i=0; i<games.length; i++){
-				me.addGame(games[i]);
+			if(games.length > 0){
+				for(var i=0; i<games.length; i++){
+					me.addGame(games[i]);
+				}
+				me.displayGames();
 			}
+			// setTimeout(function() {me.update();}, 2000);
 		},
-		'dataType':'json'
+		'dataType':'json',
+		'data':data,
+		'type':'GET'
 	});
+};
+
+assimilation.UserGameList.prototype.displayGames = function() {
+	var games = [];
+	for(id in this.games){
+		games.push(this.games[id]);
+	}
+	games.sort(function(a,b){
+		if(a['status'] < b['status']){
+			return 1;
+		}else if(a['status'] > b['status']){
+			return -1;
+		}
+		else{
+			if(a['status'] == 'playing'){
+				if(a['myTurn'] && !b['myTurn'])
+					return -1;
+				if(!a['myTurn'] && b['myTurn'])
+					return 1;
+				return Number(a['updated']) - Number(b['updated']);
+			}
+			else{
+				return Number(b['updated']) - Number(a['updated']);
+			}
+		}
+	});
+	for(var i=0; i<games.length; i++)
+		this.container.append(games[i].dom);
 };
 
 assimilation.UserGameList.prototype.addGame = function(game) {
 	var me=this;
 	if(this.games[game['id']]){
-		this.games[game['id']].remove();
+		this.games[game['id']]['dom'].remove();
 	}
 	var newGameContainer = $("<div>").addClass('game-list-item');
 	var users = {};
@@ -52,7 +89,7 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 		}
 		players.append($('<div>').addClass('player-list').append(list));
 
-		players.append($('<div>').addClass('last-move').text('Last Move:').append($('<span>').text(game['updated'].substr(0,7))))
+		players.append($('<div>').addClass('last-move').text('Last Move:').append($('<span>').text(moment(new Date(Math.floor(1000*Number(game['updated'])))).fromNow())));
 
 		left.append(players);
 
@@ -112,7 +149,7 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 		}
 		players.append($('<div>').addClass('player-list').append(list));
 
-		players.append($('<div>').addClass('last-move').text('Last Move:').append($('<span>').text(game['updated'].substr(0,7))))
+		players.append($('<div>').addClass('last-move').text('Last Move:').append($('<span>').text(moment(new Date(Math.floor(1000*Number(game['updated'])))).fromNow())));
 
 		left.append(players);
 
@@ -136,9 +173,11 @@ assimilation.UserGameList.prototype.addGame = function(game) {
 		'dom':newGameContainer,
 		'state': game['state'],
 		'players': users,
-		'size': game['size']
+		'myTurn' : this.userid == game['currentPlayer'],
+		'size': game['size'],
+		'status': game['status'],
+		'updated': game['updated']
 	};
-	this.container.append(newGameContainer);
 	newGameContainer.click(function(){
 		$('.game-list-item').removeClass('selected');
 		newGameContainer.addClass('selected');
