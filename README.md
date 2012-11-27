@@ -41,4 +41,13 @@ Afterwards you should have the goog directory at: `<project_root>/assimilation/s
 
 Next you need to create a local database on your system, to do this go to `<project_root>/` and run the command `python manage.py syncdb`
 
-To run the server type `python manage.py runserver`!
+
+Makefile
+--------
+There is a makefile that you can use to compile from .less to .css, and to minify and optimize the javascript.
+
+To build the javascript type the command `make js`
+
+To build the css use `make css`
+
+To run the webserver simply use `make run`
