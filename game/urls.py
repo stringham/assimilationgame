@@ -7,11 +7,22 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
+from django.conf.urls.defaults import *
+from tastypie.api import Api 
+from assimilation.api import *
+
+v1_api = Api(api_name='v1')
+v1_api.register(UserResource())
+v1_api.register(GameResource())
+
+game_resource = GameResource()
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'game.views.home', name='home'),
     # url(r'^game/', include('game.foo.urls')),
     url(r'^assimilation/', include('assimilation.urls')),
+    (r'^api/', include(v1_api.urls)),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
